@@ -43,6 +43,3 @@ class StatsDigester:
         return json.loads(ret)
 
 
-if __name__ == '__main__':
-    sd = StatsDigester()
-
