@@ -1,4 +1,3 @@
-
 import urllib
 import json
 import sys
@@ -15,14 +14,15 @@ PLAYOFFS_ID = 3
 class StatsDigester:
     """Retrieve NHL stats from nhl.com"""
 
-    def getURL(self, season, summary_type='team', game_type=REGULAR_SEASON_ID):
+    @staticmethod
+    def getURL(season, summary_type='team', game_type=REGULAR_SEASON_ID):
         """Form the URL to retrieve stats from"""
 
         if(len(season) != 2):
-            raise("INVALID SEASON FORMAT")
+            raise ValueError("Invalid Season Format")
 
         if(game_type != REGULAR_SEASON_ID and game_type != PLAYOFFS_ID):
-            raise("INVALID GAME TYPE")
+            raise ValueError("Invalid Game Type")
 
         sum_str = ''
         if(summary_type == 'team'):
@@ -30,12 +30,13 @@ class StatsDigester:
         elif(summary_type == 'player'):
             sum_str = PLAYER_STATS
         else:
-            raise("INVALID SUMMARY TYPE")
+            raise ValueError("Invalid Summary Type")
 
         cayenne_str = CAYENNE_EXP_FORMAT % (season[0], season[1], game_type)
         return BASE_URL + sum_str + cayenne_str
 
-    def fetchJSON(self, URL):
+    @staticmethod
+    def fetchJSON(URL):
         """Fetch stats from URL and return JSON"""
 
         fd = urllib.urlopen(URL)
