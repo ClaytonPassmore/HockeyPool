@@ -1,4 +1,5 @@
 import sys
+import time
 import MySQLdb
 
 from StatsDigester import StatsDigester as SD
@@ -63,7 +64,6 @@ def insert_data_in_db(sql_con, URL, table_name):
         cursor.execute(query.encode('utf-8'))
         sql_con.commit()
     except:
-        raise
         sql_con.rollback()
         cursor.close()
         return -1
@@ -128,6 +128,13 @@ def main():
 
     # Close the database connection.
     db.close()
+
+    # Write out the time so we know when the DB was last updated.
+    fd = open('last_updated', 'w')
+    if not fd:
+        print('Could not write update time')
+    fd.write(str(time.time()) + '\n')
+    fd.close()
 
 if __name__ == '__main__':
     main()
