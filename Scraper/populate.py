@@ -130,7 +130,7 @@ def main():
     db.close()
 
     # Write out the time so we know when the DB was last updated.
-    fd = open('last_updated', 'w')
+    fd = open('last_updated.cfg', 'w')
     if not fd:
         print('Could not write update time')
     fd.write(str(time.time()) + '\n')
