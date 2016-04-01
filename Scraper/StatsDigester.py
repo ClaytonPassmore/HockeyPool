@@ -24,7 +24,7 @@ class StatsDigester:
         if(game_type != REGULAR_SEASON_ID and game_type != PLAYOFFS_ID):
             raise ValueError("Invalid Game Type")
 
-        sum_str = ''
+        sum_str = None
         if(summary_type == 'team'):
             sum_str = TEAM_STATS
         elif(summary_type == 'player'):
