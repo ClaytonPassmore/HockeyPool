@@ -5,7 +5,6 @@ USE HockeyPool;
 CREATE TABLE teams
 (
     -- Team Logistics
-    teamId INTEGER NOT NULL,
     teamFullName VARCHAR(255) NOT NULL,
     teamAbbrev VARCHAR(255) NOT NULL,
     seasonId INTEGER NOT NULL,
@@ -33,39 +32,38 @@ CREATE TABLE teams
     goalsForPerGame FLOAT NOT NULL,
     shotsForPerGame FLOAT NOT NULL,
 
-    PRIMARY KEY (teamId)
+    PRIMARY KEY (teamFullName)
 );
 
 CREATE TABLE players
 (
     -- Player Logistics
-    playerId INTEGER NOT NULL,
-    seasonId INTEGER NOT NULL,
-    playerFirstName VARCHAR(255) NOT NULL,
-    playerLastName VARCHAR(255) NOT NULL,
+    seasonId INTEGER NOT NULL DEFAULT 0,
+    playerFirstName VARCHAR(255),
+    playerLastName VARCHAR(255),
     playerName VARCHAR(255) NOT NULL,
-    playerPositionCode VARCHAR(255) NOT NULL,
-    playerTeamsPlayedFor VARCHAR(255) NOT NULL,
+    playerPositionCode VARCHAR(255),
+    playerTeamsPlayedFor VARCHAR(255),
     -- Points and Goals
-    points INTEGER NOT NULL,
-    goals INTEGER NOT NULL,
-    assists INTEGER NOT NULL,
-    ppGoals INTEGER NOT NULL,
-    shGoals INTEGER NOT NULL,
-    gameWinningGoals INTEGER NOT NULL,
-    otGoals INTEGER NOT NULL,
-    shPoints INTEGER NOT NULL,
-    ppPoints INTEGER NOT NULL,
-    plusMinus INTEGER NOT NULL,
+    points INTEGER NOT NULL DEFAULT 0,
+    goals INTEGER NOT NULL DEFAULT 0,
+    assists INTEGER NOT NULL DEFAULT 0,
+    ppGoals INTEGER NOT NULL DEFAULT 0,
+    shGoals INTEGER NOT NULL DEFAULT 0,
+    gameWinningGoals INTEGER NOT NULL DEFAULT 0,
+    otGoals INTEGER NOT NULL DEFAULT 0,
+    shPoints INTEGER NOT NULL DEFAULT 0,
+    ppPoints INTEGER NOT NULL DEFAULT 0,
+    plusMinus INTEGER NOT NULL DEFAULT 0,
     -- Stats
-    timeOnIcePerGame FLOAT NOT NULL,
-    shiftsPerGame FLOAT NOT NULL,
-    pointsPerGame FLOAT NOT NULL,
-    faceOffWinPctg FLOAT NOT NULL,
-    shootingPctg FLOAT NOT NULL,
-    penaltyMinutes INTEGER NOT NULL,
-    gamesPlayed INTEGER NOT NULL,
-    shots INTEGER NOT NULL,
+    timeOnIcePerGame FLOAT NOT NULL DEFAULT 0,
+    shiftsPerGame FLOAT NOT NULL DEFAULT 0,
+    pointsPerGame FLOAT NOT NULL DEFAULT 0,
+    faceOffWinPctg FLOAT NOT NULL DEFAULT 0,
+    shootingPctg FLOAT NOT NULL DEFAULT 0,
+    penaltyMinutes INTEGER NOT NULL DEFAULT 0,
+    gamesPlayed INTEGER NOT NULL DEFAULT 0,
+    shots INTEGER NOT NULL DEFAULT 0,
 
-    PRIMARY KEY (playerId)
+    PRIMARY KEY (playerName)
 );

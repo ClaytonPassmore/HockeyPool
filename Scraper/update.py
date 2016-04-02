@@ -24,6 +24,12 @@ def update_table(sql_con, URL, table_name):
     if not js or len(js['data']) == 0:
         return -1
 
+    if table_name == 'teams':
+        key_to_omit = 'teamId'
+    else:
+        key_to_omit = 'playerId'
+    del(js['data'][0][key_to_omit]) # This omits the ID key
+
     # Determine the column names
     # Note if NHL changes their column names, we're SOL.
     keys = js['data'][0].keys()
@@ -31,13 +37,13 @@ def update_table(sql_con, URL, table_name):
 
     # Determine the primary key for the table
     if table_name == 'teams':
-        pkey = u'teamId'
+        pkey = u'teamFullName'
     elif table_name == 'players':
-        pkey = u'playerId'
+        pkey = u'playerName'
     else:
         return -1
 
-    query = u'UPDATE %s SET %s WHERE %s=%d'
+    query = u'UPDATE %s SET %s WHERE %s="%s"'
     query_list = []
 
     for item in js['data']:
