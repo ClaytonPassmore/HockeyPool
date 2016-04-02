@@ -3,6 +3,9 @@ define(function(require) {
     var typeahead = require('typeahead');
     var Bloodhound = require('bloodhound');
 
+    // Snake to keep track of whose turn it is.
+    var snake = require('app/model/snake');
+
     var entry = document.getElementById('entry');
     var ta = document.createElement('input')
     ta.setAttribute('class', 'typeahead');
