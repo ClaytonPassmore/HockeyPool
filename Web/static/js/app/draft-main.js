@@ -6,11 +6,14 @@ define(function(require) {
     // Snake to keep track of whose turn it is.
     var snake = require('app/model/snake');
 
-    var entry = document.getElementById('entry');
+    // Get a handle on the entry point.
+    var entry = require('app/view/entry');
+
+    // Add a typeahead box
     var ta = document.createElement('input')
     ta.setAttribute('class', 'typeahead');
     ta.setAttribute('type', 'text');
-    entry.appendChild(ta);
+    entry.element.appendChild(ta);
 
     var items = ['one', 'two', 'three'];
     var eng = new Bloodhound({
