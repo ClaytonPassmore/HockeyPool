@@ -37,11 +37,11 @@ def update_table(sql_con, URL, table_name):
 
     # Determine the primary key for the table
     if table_name == 'teams':
-        pkey = u'teamFullName'
+        pkey = [u'teamFullName']
     elif table_name == 'players':
-        pkey = u'playerName'
+        pkey = [u'playerName', u'playerTeamsPlayedFor']
     elif table_name == 'goalies':
-        pkey = u'playerName'
+        pkey = [u'playerName', u'playerTeamsPlayedFor']
     else:
         return -1
 
@@ -60,7 +60,10 @@ def update_table(sql_con, URL, table_name):
             if k < (len(keys) - 1):
                 string += ','
         # Add the query to the list of queries.
-        query_list.append(query % (table_name, string, pkey, item[pkey]))
+        query_list.append(query % (table_name, string, pkey[0], item[pkey[0]]))
+        if len(pkey) > 1:
+            for k in range(1, len(pkey)):
+                query_list[-1] = query_list[-1] + (u' and %s="%s"' % (pkey[k], item[pkey[k]]))
 
     # Get a cursor from the database connection
     cursor = sql_con.cursor()
