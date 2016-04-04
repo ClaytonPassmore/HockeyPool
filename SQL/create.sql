@@ -7,30 +7,30 @@ CREATE TABLE teams
     -- Team Logistics
     teamFullName VARCHAR(255) NOT NULL,
     teamAbbrev VARCHAR(255) NOT NULL,
-    seasonId INTEGER NOT NULL,
+    seasonId INTEGER NOT NULL DEFAULT 0,
 
     -- Wins/Losses, etc.
-    wins INTEGER NOT NULL,
-    losses INTEGER NOT NULL,
-    ties INTEGER NOT NULL,
-    regPlusOtWins INTEGER NOT NULL,
-    otLosses INTEGER NOT NULL,
-    gamesPlayed INTEGER NOT NULL,
+    wins INTEGER NOT NULL DEFAULT 0,
+    losses INTEGER NOT NULL DEFAULT 0,
+    ties INTEGER NOT NULL DEFAULT 0,
+    regPlusOtWins INTEGER NOT NULL DEFAULT 0,
+    otLosses INTEGER NOT NULL DEFAULT 0,
+    gamesPlayed INTEGER NOT NULL DEFAULT 0,
 
     -- Points
-    goalsFor INTEGER NOT NULL,
-    goalsAgainst INTEGER NOT NULL,
-    points INTEGER NOT NULL,
+    goalsFor INTEGER NOT NULL DEFAULT 0,
+    goalsAgainst INTEGER NOT NULL DEFAULT 0,
+    points INTEGER NOT NULL DEFAULT 0,
 
     -- Stats
-    ppPctg FLOAT NOT NULL,
-    pointPctg FLOAT NOT NULL,
-    goalsAgainstPerGame FLOAT NOT NULL,
-    faceOffWinPctg FLOAT NOT NULL,
-    pkPctg FLOAT NOT NULL,
-    shotsAgainstPerGame FLOAT NOT NULL,
-    goalsForPerGame FLOAT NOT NULL,
-    shotsForPerGame FLOAT NOT NULL,
+    ppPctg FLOAT NOT NULL DEFAULT 0,
+    pointPctg FLOAT NOT NULL DEFAULT 0,
+    goalsAgainstPerGame FLOAT NOT NULL DEFAULT 0,
+    faceOffWinPctg FLOAT NOT NULL DEFAULT 0,
+    pkPctg FLOAT NOT NULL DEFAULT 0,
+    shotsAgainstPerGame FLOAT NOT NULL DEFAULT 0,
+    goalsForPerGame FLOAT NOT NULL DEFAULT 0,
+    shotsForPerGame FLOAT NOT NULL DEFAULT 0,
 
     PRIMARY KEY (teamFullName)
 );

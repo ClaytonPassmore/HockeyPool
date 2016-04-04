@@ -23,16 +23,14 @@ def insert_data_in_db(sql_con, URL, table_name):
     if not js or len(js['data']) == 0:
         return -1
 
+    # Only populate entries with primary keys
     if table_name == 'teams':
-        key_to_omit = 'teamId'
+        pkeys = ['teamFullName', 'teamAbbrev']
     else: # Omit for players and goalies
-        key_to_omit = 'playerId'
-    del(js['data'][0][key_to_omit]) # This omits the ID key
+        pkeys = ['playerName', 'playerTeamsPlayedFor']
 
     # Determine the column names
-    # Note if NHL changes their column names, we're SOL.
-    keys = js['data'][0].keys()
-    columns = ','.join(keys)
+    columns = ','.join(pkeys)
 
     # Start building the query
     query = u'INSERT INTO %s (%s) VALUES ' % (table_name, columns)
@@ -40,14 +38,14 @@ def insert_data_in_db(sql_con, URL, table_name):
     # Add the data from each entry to the query
     for i in range(len(js['data'])):
         string = u'('
-        for k in range(len(keys)):
+        for k in range(len(pkeys)):
             # Have to put this in quotes
-            if type(js['data'][i][keys[k]]) is unicode:
-                addition = u'"' + js['data'][i][keys[k]] + u'"'
+            if type(js['data'][i][pkeys[k]]) is unicode:
+                addition = u'"' + js['data'][i][pkeys[k]] + u'"'
             else:
-                addition = str(js['data'][i][keys[k]])
+                addition = str(js['data'][i][pkeys[k]])
             string += addition
-            if k < (len(keys) - 1):
+            if k < (len(pkeys) - 1):
                 string += ','
         string += ')'
 
@@ -117,9 +115,10 @@ def main():
     fd.close()
 
     # Start retrieving the data from nhl.com
-    teamURL = SD.getURL(season, 'team', season_type)
-    playerURL = SD.getURL(season, 'player', season_type)
-    goalieURL = SD.getURL(season, 'goalie', season_type)
+    # Always populate with regular season data.
+    teamURL = SD.getURL(season, 'team', REGULAR_SEASON_ID)
+    playerURL = SD.getURL(season, 'player', REGULAR_SEASON_ID)
+    goalieURL = SD.getURL(season, 'goalie', REGULAR_SEASON_ID)
 
     # Create a database connection.
     db = MySQLdb.connect(host='localhost', user='root', passwd='root', db='HockeyPool')
