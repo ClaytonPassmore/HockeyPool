@@ -39,11 +39,11 @@ CREATE TABLE players
 (
     -- Player Logistics
     seasonId INTEGER NOT NULL DEFAULT 0,
+    playerTeamsPlayedFor VARCHAR(255) NOT NULL,
+    playerName VARCHAR(255) NOT NULL,
     playerFirstName VARCHAR(255),
     playerLastName VARCHAR(255),
-    playerName VARCHAR(255) NOT NULL,
     playerPositionCode VARCHAR(255),
-    playerTeamsPlayedFor VARCHAR(255),
     -- Points and Goals
     points INTEGER NOT NULL DEFAULT 0,
     goals INTEGER NOT NULL DEFAULT 0,
@@ -65,5 +65,36 @@ CREATE TABLE players
     gamesPlayed INTEGER NOT NULL DEFAULT 0,
     shots INTEGER NOT NULL DEFAULT 0,
 
-    PRIMARY KEY (playerName)
+    PRIMARY KEY (playerName, playerTeamsPlayedFor)
+);
+
+CREATE TABLE goalies
+(
+    -- Player Logistics
+    seasonId INTEGER NOT NULL DEFAULT 0,
+    playerTeamsPlayedFor VARCHAR(255) NOT NULL,
+    playerName VARCHAR(255) NOT NULL,
+    playerFirstName VARCHAR(255),
+    playerLastName VARCHAR(255),
+    playerPositionCode VARCHAR(255),
+    -- Points/Wins/Losses
+    goals INTEGER NOT NULL DEFAULT 0,
+    assists INTEGER NOT NULL DEFAULT 0,
+    wins INTEGER NOT NULL DEFAULT 0,
+    ties INTEGER NOT NULL DEFAULT 0,
+    losses INTEGER NOT NULL DEFAULT 0,
+    otLosses INTEGER NOT NULL DEFAULT 0,
+    -- Stats
+    gamesStarted INTEGER NOT NULL DEFAULT 0,
+    gamesPlayed INTEGER NOT NULL DEFAULT 0,
+    timeOnIce INTEGER NOT NULL DEFAULT 0,
+    penaltyMinutes INTEGER NOT NULL DEFAULT 0,
+    shotsAgainst INTEGER NOT NULL DEFAULT 0,
+    savePctg FLOAT NOT NULL DEFAULT 0,
+    saves INTEGER NOT NULL DEFAULT 0,
+    shutouts INTEGER NOT NULL DEFAULT 0,
+    goalsAgainstAverage FLOAT NOT NULL DEFAULT 0,
+    goalsAgainst INTEGER NOT NULL DEFAULT 0,
+
+    PRIMARY KEY (playerName, playerTeamsPlayedFor)
 );

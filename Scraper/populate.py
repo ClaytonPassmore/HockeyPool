@@ -25,7 +25,7 @@ def insert_data_in_db(sql_con, URL, table_name):
 
     if table_name == 'teams':
         key_to_omit = 'teamId'
-    else:
+    else: # Omit for players and goalies
         key_to_omit = 'playerId'
     del(js['data'][0][key_to_omit]) # This omits the ID key
 
@@ -70,6 +70,7 @@ def insert_data_in_db(sql_con, URL, table_name):
         cursor.execute(query.encode('utf-8'))
         sql_con.commit()
     except:
+        raise
         sql_con.rollback()
         cursor.close()
         return -1
@@ -118,6 +119,7 @@ def main():
     # Start retrieving the data from nhl.com
     teamURL = SD.getURL(season, 'team', season_type)
     playerURL = SD.getURL(season, 'player', season_type)
+    goalieURL = SD.getURL(season, 'goalie', season_type)
 
     # Create a database connection.
     db = MySQLdb.connect(host='localhost', user='root', passwd='root', db='HockeyPool')
@@ -128,7 +130,8 @@ def main():
 
     # Put the data in the database.
     if (insert_data_in_db(db, teamURL, 'teams') or
-            insert_data_in_db(db, playerURL, 'players')):
+            insert_data_in_db(db, playerURL, 'players') or
+            insert_data_in_db(db, goalieURL, 'goalies')):
         print('Error inserting data into database. Abort.')
         return -1
 
@@ -141,6 +144,7 @@ def main():
         print('Could not write update time')
     fd.write(str(time.time()) + '\n')
     fd.close()
+
 
 if __name__ == '__main__':
     main()

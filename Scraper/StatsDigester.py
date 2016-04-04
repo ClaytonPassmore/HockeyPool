@@ -5,6 +5,7 @@ import sys
 BASE_URL = 'http://www.nhl.com/stats/rest/grouped/'
 TEAM_STATS = 'teams/season/teamsummary'
 PLAYER_STATS = 'skaters/season/skatersummary'
+GOALIE_STATS = 'goalies/season/goaliesummary'
 CAYENNE_EXP_FORMAT = '?cayenneExp=seasonId=%04d%04d%%20and%%20gameTypeId=%d'
 
 REGULAR_SEASON_ID = 2
@@ -29,6 +30,8 @@ class StatsDigester:
             sum_str = TEAM_STATS
         elif(summary_type == 'player'):
             sum_str = PLAYER_STATS
+        elif(summary_type == 'goalie'):
+            sum_str = GOALIE_STATS
         else:
             raise ValueError("Invalid Summary Type")
 

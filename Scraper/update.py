@@ -26,7 +26,7 @@ def update_table(sql_con, URL, table_name):
 
     if table_name == 'teams':
         key_to_omit = 'teamId'
-    else:
+    else: # Omit for players and goalies
         key_to_omit = 'playerId'
     del(js['data'][0][key_to_omit]) # This omits the ID key
 
@@ -39,6 +39,8 @@ def update_table(sql_con, URL, table_name):
     if table_name == 'teams':
         pkey = u'teamFullName'
     elif table_name == 'players':
+        pkey = u'playerName'
+    elif table_name == 'goalies':
         pkey = u'playerName'
     else:
         return -1
@@ -116,6 +118,7 @@ def main():
     # Create the URLs to retrieve data from.
     teamURL = SD.getURL(season, 'team', season_type)
     playerURL = SD.getURL(season, 'player', season_type)
+    goalieURL = SD.getURL(season, 'goalie', season_type)
 
     # Create a connection to the database.
     db = MySQLdb.connect(host='localhost', user='root', passwd='root', db='HockeyPool')
@@ -126,7 +129,9 @@ def main():
     db.autocommit(False)
 
     # Update the tables
-    if update_table(db, teamURL, 'teams') or update_table(db, playerURL, 'players'):
+    if (update_table(db, teamURL, 'teams') or
+            update_table(db, playerURL, 'players') or
+            update_table(db, goalieURL, 'goalies')):
         print('Unable to update database. Abort.')
         return -1
 
