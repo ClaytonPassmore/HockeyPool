@@ -1,12 +1,26 @@
-define(['app/view/entry', 'app/model/snake'], function(entry, snake) {
+define(['app/view/entry', 'app/model/snake', 'app/model/draft_data', 'jquery', 'typeahead', 'bloodhound'],
+function(entry, snake, data, $, typeahead, Bloodhound) {
     var snake_view = {
-        init: function(entry, snake) {
+        init: function(entry, snake, data) {
             this.entry = entry;
             this.model = snake;
+            this.data = data;
             this.listeners = [];
             this.choices = [];
             this.num_rounds = 0;
+
+            // Variables for typeahead
+            this.teams = false;
+            this.players = false;
+            this.team_bloodhound = false;
+            this.player_bloodhound = false;
+
             this.rounds_callback = this.rounds_callback.bind(this);
+            this.data_callback = this.data_callback.bind(this);
+
+            // Add listener for the hockey data
+            this.data.add_listener(this.data_callback);
+            this.data.get_data();
         },
         // Start the draft, snake style.
         start: function() {
@@ -54,6 +68,30 @@ define(['app/view/entry', 'app/model/snake'], function(entry, snake) {
             while(this.div.firstChild) {
                 this.div.removeChild(this.div.firstChild);
             }
+            // TODO make this a little more robust...
+            if(this.team_bloodhound == false || this.player_bloodhound == false) {
+                console.error('Could not load player data');
+                var err = document.createElement('h1');
+                err.textContent = 'ERROR: Could not load player or team data.'
+                this.div.appendChild(err);
+                return;
+            }
+            this.begin_snake();
+        },
+        // Get team and player data
+        data_callback: function(teams, players) {
+            this.teams = teams;
+            this.players = players;
+            this.team_bloodhound = new Bloodhound({
+                datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d[0]); },
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                local: this.teams
+            });
+            this.player_bloodhound = new Bloodhound({
+                datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d[0]); },
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                local: this.players
+            });
         },
         // Add participants to the snake.
         add_participants: function(partis) {
@@ -70,10 +108,47 @@ define(['app/view/entry', 'app/model/snake'], function(entry, snake) {
             for(var i = 0; i < this.listeners.length; i++) {
                 this.listeners[i](this.choices);
             }
+        },
+        begin_snake: function() {
+            this.title = document.createElement('h1');
+
+            this.input = document.createElement('input');
+            this.input.setAttribute('id', 'typeahead');
+            this.input.setAttribute('class', 'text-input');
+            this.input.setAttribute('type', 'text');
+
+            this.submit = document.createElement('div');
+            this.submit.setAttribute('class', 'blue-submit-button');
+            this.submit.textContent = 'Next';
+
+            this.div.appendChild(this.title);
+            this.div.appendChild(this.input);
+            this.div.appendChild(this.submit);
+
+            // Set up typeahead
+            $('#typeahead').typeahead({
+                hint: true,
+                highlight: true,
+                minLength: 1
+            },
+            {
+                name: 'Players',
+                source: this.player_bloodhound,
+                templates: {
+                    header: '<h3>Players</h3>'
+                }
+            },
+            {
+                name: 'Goalies',
+                source: this.team_bloodhound,
+                templates: {
+                    header: '<h3>Goalies</h3>'
+                }
+            });
         }
     };
 
-    snake_view.init(entry, snake);
+    snake_view.init(entry, snake, data);
     return snake_view;
 
 });
