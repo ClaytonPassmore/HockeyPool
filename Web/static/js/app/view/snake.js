@@ -83,12 +83,12 @@ function(entry, snake, data, $, typeahead, Bloodhound) {
             this.teams = teams;
             this.players = players;
             this.team_bloodhound = new Bloodhound({
-                datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d[0]); },
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
                 queryTokenizer: Bloodhound.tokenizers.whitespace,
                 local: this.teams
             });
             this.player_bloodhound = new Bloodhound({
-                datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d[0]); },
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
                 queryTokenizer: Bloodhound.tokenizers.whitespace,
                 local: this.players
             });
@@ -133,13 +133,16 @@ function(entry, snake, data, $, typeahead, Bloodhound) {
             },
             {
                 name: 'Players',
+                display: 'name',
                 source: this.player_bloodhound,
                 templates: {
-                    header: '<h3>Players</h3>'
+                    header: '<h3>Players</h3>',
+                    suggestion: function(d) { return '<div><strong>' + d.name + '</strong> - ' + d.team + '</div>'; }
                 }
             },
             {
                 name: 'Goalies',
+                display: 'name',
                 source: this.team_bloodhound,
                 templates: {
                     header: '<h3>Goalies</h3>'

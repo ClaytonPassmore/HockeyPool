@@ -53,9 +53,9 @@ html, body {
     text-align: left;
     /*position: relative;
     left: 50%;
-    transform: translate(-50%, 0);*/
+    transform: translate(-50%, 0);
     margin-top: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 20px;*/
 }
 
 .blue-submit-button {
@@ -70,6 +70,11 @@ html, body {
     line-height: 30px;
     border-radius: 10px;
     padding: 5px;
+}
+
+.tt-dataset {
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 /* Borrowed code */
@@ -102,6 +107,9 @@ html, body {
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 8px;
     box-shadow: 0 5px 10px rgba(0,0,0,.2);
+
+    max-height: 200px;
+    overflow-y: auto;
 }
 
 .tt-suggestion {
@@ -113,7 +121,6 @@ html, body {
 .tt-suggestion.tt-cursor {
     color: #fff;
     background-color: #0097cf;
-
 }
 
 .tt-suggestion p {

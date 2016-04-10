@@ -28,8 +28,10 @@ def rest():
 
         # Decode unicode strings
         for i in range(len(teams)):
-            for j in range(len(teams[i])):
-                teams[i][j] = teams[i][j].decode('utf-8')
+            dic = {}
+            dic[u'name'] = teams[i][0].decode('utf-8')
+            dic[u'short'] = teams[i][1].decode('utf-8')
+            teams[i] = dic
 
         # Query for players
         db.query(player_query)
@@ -39,8 +41,10 @@ def rest():
 
         # Decode unicode strings
         for i in range(len(players)):
-            for j in range(len(players[i])):
-                players[i][j] = players[i][j].decode('utf-8')
+            dic = {}
+            dic[u'name'] = players[i][0].decode('utf-8')
+            dic[u'team'] = players[i][1].decode('utf-8')
+            players[i] = dic
 
         # Encode the result in unicode
         result = json.dumps({u'teams': teams, u'players': players}, ensure_ascii=False)
