@@ -44,6 +44,7 @@ CREATE TABLE players
     playerFirstName VARCHAR(255),
     playerLastName VARCHAR(255),
     playerPositionCode VARCHAR(255),
+
     -- Points and Goals
     points INTEGER NOT NULL DEFAULT 0,
     goals INTEGER NOT NULL DEFAULT 0,
@@ -55,6 +56,7 @@ CREATE TABLE players
     shPoints INTEGER NOT NULL DEFAULT 0,
     ppPoints INTEGER NOT NULL DEFAULT 0,
     plusMinus INTEGER NOT NULL DEFAULT 0,
+
     -- Stats
     timeOnIcePerGame FLOAT NOT NULL DEFAULT 0,
     shiftsPerGame FLOAT NOT NULL DEFAULT 0,
@@ -77,6 +79,7 @@ CREATE TABLE goalies
     playerFirstName VARCHAR(255),
     playerLastName VARCHAR(255),
     playerPositionCode VARCHAR(255),
+
     -- Points/Wins/Losses
     goals INTEGER NOT NULL DEFAULT 0,
     assists INTEGER NOT NULL DEFAULT 0,
@@ -84,6 +87,7 @@ CREATE TABLE goalies
     ties INTEGER NOT NULL DEFAULT 0,
     losses INTEGER NOT NULL DEFAULT 0,
     otLosses INTEGER NOT NULL DEFAULT 0,
+
     -- Stats
     gamesStarted INTEGER NOT NULL DEFAULT 0,
     gamesPlayed INTEGER NOT NULL DEFAULT 0,
