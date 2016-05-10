@@ -2,6 +2,7 @@ import json
 import flask
 import MySQLdb
 
+
 db = MySQLdb.connect(host='localhost', user='root', passwd='root', db='HockeyPool')
 if not db:
     print('Unable to connect to DB. Abort.')
