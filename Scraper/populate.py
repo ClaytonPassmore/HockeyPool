@@ -68,7 +68,6 @@ def insert_data_in_db(sql_con, URL, table_name):
         cursor.execute(query.encode('utf-8'))
         sql_con.commit()
     except:
-        raise
         sql_con.rollback()
         cursor.close()
         return -1
