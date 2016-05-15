@@ -3,3 +3,6 @@ depends:
 
 run:
 	python Web/server.py
+
+ubuntu:
+	sudo apt-get install mysql-server python-pip build-essential python-dev libmysqlclient-dev
