@@ -1,8 +1,16 @@
 import json
+
 import flask
 import MySQLdb
 
-db = MySQLdb.connect(host='localhost', user='root', passwd='root', db='HockeyPool')
+from config import DBConfig
+
+db = MySQLdb.connect(
+    host=DBConfig.HOST,
+    user=DBConfig.USER,
+    passwd=DBConfig.PASSWORD,
+    db=DBConfig.DB)
+
 if not db:
     print('Unable to connect to DB. Abort.')
     exit(-1)
