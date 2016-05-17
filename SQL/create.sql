@@ -1,8 +1,10 @@
-CREATE DATABASE HockeyPool;
+DROP DATABASE IF EXISTS HockeyPool;
+
+CREATE DATABASE IF NOT EXISTS HockeyPool;
 -- Switch to the newly created database
 USE HockeyPool;
 
-CREATE TABLE teams
+CREATE TABLE IF NOT EXISTS teams
 (
     -- Team Logistics
     teamFullName VARCHAR(255) NOT NULL,
@@ -35,7 +37,7 @@ CREATE TABLE teams
     PRIMARY KEY (teamFullName)
 );
 
-CREATE TABLE players
+CREATE TABLE IF NOT EXISTS players
 (
     -- Player Logistics
     seasonId INTEGER NOT NULL DEFAULT 0,
@@ -70,7 +72,7 @@ CREATE TABLE players
     PRIMARY KEY (playerName, playerTeamsPlayedFor)
 );
 
-CREATE TABLE goalies
+CREATE TABLE IF NOT EXISTS goalies
 (
     -- Player Logistics
     seasonId INTEGER NOT NULL DEFAULT 0,

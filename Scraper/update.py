@@ -1,6 +1,8 @@
 import time
+
 import MySQLdb
 
+from config import DBConfig
 from StatsDigester import StatsDigester as SD
 from StatsDigester import REGULAR_SEASON_ID, PLAYOFFS_ID
 
@@ -124,7 +126,12 @@ def main():
     goalieURL = SD.getURL(season, 'goalie', season_type)
 
     # Create a connection to the database.
-    db = MySQLdb.connect(host='localhost', user='root', passwd='root', db='HockeyPool')
+    db = MySQLdb.connect(
+        host=DBConfig.HOST,
+        user=DBConfig.USER,
+        passwd=DBConfig.PASSWORD,
+        db=DBConfig.DB)
+
     if not db:
         print('Unable to connect to DB. Abort.')
         return -1
