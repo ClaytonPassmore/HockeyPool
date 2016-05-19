@@ -15,6 +15,11 @@ define(['app/view/entry'], function(entry) {
             window.addEventListener('resize', this.set_size.bind(this));
         },
 
+        /* Get the current screen */
+        get_current: function() {
+            return this.current;
+        },
+
         /* Add a new screen and return it */
         add_screen: function() {
             var screen = document.createElement('div');
