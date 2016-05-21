@@ -17,17 +17,31 @@ html, body {
     background: #222222;
 }
 
+.draft_container {
+    overflow: hidden;
+    box-sizing: border-box;
+    height: 100%;
+    padding: 20px;
+}
+
 .sidebar {
-    min-height: 200px;
+    height: 100%;
     min-width: 300px;
-    display: inline-block;
-    margin: 20px;
+    float: left;
+    padding: 20px 0 20px 20px;
+    box-sizing: border-box;
+}
+
+.outer_sidebar {
+    height: 100%;
+    padding: 15px;
     background: #2A2C45;
+    box-sizing: border-box;
 }
 
 .inner_sidebar {
+    height: 100%;
     border: 1px solid;
-    margin: 15px;
     overflow-y: auto;
 }
 

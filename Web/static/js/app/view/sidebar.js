@@ -3,6 +3,9 @@ define(function() {
         this.elem = document.createElement("div");
         this.elem.setAttribute('class', 'sidebar');
 
+        this.outer_elem = document.createElement("div");
+        this.outer_elem.setAttribute('class', 'outer_sidebar');
+
         this.inner_elem = document.createElement("div");
         this.inner_elem.setAttribute('class', 'inner_sidebar');
 
@@ -18,13 +21,15 @@ define(function() {
         this.list_container_elem.appendChild(this.list_elem);
         this.inner_elem.appendChild(this.title_elem);
         this.inner_elem.appendChild(this.list_container_elem);
-        this.elem.appendChild(this.inner_elem);
+        this.outer_elem.appendChild(this.inner_elem);
+        this.elem.appendChild(this.outer_elem);
         return this
     };
 
     sidebar.prototype.set_title = function(title) {
         this.title_elem.innerText = title;
     }
+
     sidebar.prototype.set_items = function(items) {
         while(this.list_elem.firstChild) {
             this.list_elem.removeChild(this.list_elem.firstChild);
@@ -47,13 +52,6 @@ define(function() {
 
     sidebar.prototype.set_opacity = function(opacity) {
         this.elem.style.opacity = opacity;
-    }
-
-    sidebar.prototype.set_height = function(height) {
-        // 40 for position offset
-        this.elem.style.height = (height - 40).toString() + 'px';
-        // 30 for position offset
-        this.inner_elem.style.height = (height - 40 - 30).toString() + 'px';
     }
 
     return sidebar;
