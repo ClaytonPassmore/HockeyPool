@@ -2,7 +2,43 @@ html, body {
     margin: 0;
     padding: 0;
     font-family: 'Open Sans', sans-serif;
+    color: white;
+    border-color: white;
 }
+
+.screen {
+    background: #222222;
+}
+
+.sidebar {
+    min-height: 200px;
+    min-width: 300px;
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    background: #2A2C45;
+}
+
+.inner_sidebar {
+    border: 1px solid;
+    margin: 15px;
+    overflow-y: auto;
+}
+
+.sidebar_title {
+    text-align: center;
+    font-size: 30px;
+    margin: 10px 5%;
+    width: 90%;
+    border-bottom: 1px solid;
+}
+
+.sidebar_list_container {
+    padding-right: 15px;
+}
+
+.sidebar_list {}
+.sidebar_list_item {}
 
 .participant-div {
     background-color: white;
