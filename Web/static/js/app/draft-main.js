@@ -1,19 +1,25 @@
 define(function(require) {
-    // Snake to keep track of whose turn it is.
-    var snake = require('app/view/snake');
+    var Screen = require('app/view/screen');
+    var SideBar = require('app/view/sidebar');
+    var DraftContainer = require('app/view/draft_container');
+    var TitleSpan = require('app/view/title_span');
 
-    // Get a handle on the entry point.
-    var entry = require('app/view/entry');
-    var participants = require('app/view/participants');
+    var title_screen = Screen.get_current();
+    var draft_screen = Screen.add_screen();
 
-    // This will get called when we know the participants.
-    var parti_callback = function(parties) {
-        snake.add_participants(parties);
-        entry.clear();
-        snake.start();
-    }
+    title_span = new TitleSpan();
+    title_span.set_title('Welcome to the Draft.');
+    title_screen.appendChild(title_span.get_element());
 
-    // Start the process by getting the participants ready
-    participants.register_callback(parti_callback);
-    participants.start();
+    title_screen.addEventListener('click', Screen.next);
+    title_screen.addEventListener('keypress', Screen.next);
+
+    sidebar = new SideBar();
+    sidebar.hide();
+    sidebar.set_title("Clayton's Picks");
+    sidebar.set_items(['Sydney Crosby', 'Snoop Dogg', 'Kobe Bryant', 'Lebron James']);
+
+    draft_container = new DraftContainer();
+    draft_screen.appendChild(sidebar.get_element());
+    draft_screen.appendChild(draft_container.get_element());
 });

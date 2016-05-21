@@ -13,6 +13,22 @@ html, body {
     user-select: none;
 }
 
+.title_span {
+    background: #2D306F;
+    text-align: center;
+    padding: 20px;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.title_span_title {
+    font-size: 30px;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .screen {
     background: #222222;
 }

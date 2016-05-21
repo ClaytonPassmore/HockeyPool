@@ -52,7 +52,15 @@ define(function() {
 
     sidebar.prototype.set_opacity = function(opacity) {
         this.elem.style.opacity = opacity;
-    }
+    };
+
+    sidebar.prototype.hide = function() {
+        this.elem.style.display = 'none';
+    };
+
+    sidebar.prototype.show = function() {
+        this.elem.style.display = 'block';
+    };
 
     return sidebar;
 });
