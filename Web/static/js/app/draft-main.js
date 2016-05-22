@@ -1,10 +1,10 @@
 define(function(require) {
-    var Screen = require('app/view/screen');
+    var ScreenMgr = require('app/view/screen_mgr');
     var SideBar = require('app/view/sidebar');
     var DraftContainer = require('app/view/draft_container');
     var TitleSpan = require('app/view/title_span');
 
-    var screen_mgr = new Screen();
+    var screen_mgr = new ScreenMgr();
     var title_screen = screen_mgr.get_current();
     var draft_screen = screen_mgr.add_screen();
 

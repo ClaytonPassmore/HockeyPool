@@ -1,5 +1,5 @@
 define(['app/view/entry'], function(entry) {
-    var screen = function() {
+    var screen_mgr = function() {
         this.entry = entry;
         this.element = entry.get_element();
         this.screens = [];
@@ -15,12 +15,12 @@ define(['app/view/entry'], function(entry) {
     };
 
     /* Get the current screen */
-    screen.prototype.get_current = function() {
+    screen_mgr.prototype.get_current = function() {
         return this.current;
     };
 
     /* Add a new screen and return it */
-    screen.prototype.add_screen = function() {
+    screen_mgr.prototype.add_screen = function() {
         var screen = document.createElement('div');
         screen.setAttribute('class', 'screen');
         screen.style.display = 'none';
@@ -31,7 +31,7 @@ define(['app/view/entry'], function(entry) {
     };
 
     /* Set next screen as current */
-    screen.prototype.next = function() {
+    screen_mgr.prototype.next = function() {
         var index = this.screens.indexOf(this.current);
         if(index < 0) {
             index = this.screens.length - 1;
@@ -41,7 +41,7 @@ define(['app/view/entry'], function(entry) {
     };
 
     /* Set previous screen as current */
-    screen.prototype.previous = function() {
+    screen_mgr.prototype.previous = function() {
         var index = this.screens.indexOf(this.current);
         if(index < 0) {
             index = this.screens.length - 1;
@@ -51,12 +51,12 @@ define(['app/view/entry'], function(entry) {
     };
 
     /* Remove the specified screen */
-    screen.prototype.remove_screen = function(screen) {
+    screen_mgr.prototype.remove_screen = function(screen) {
         var index = this.screens.indexOf(screen);
         return this.remove_screen_by_index(index);
     };
 
-    screen.prototype.remove_screen_by_index = function(index) {
+    screen_mgr.prototype.remove_screen_by_index = function(index) {
         if(index < 0 || index >= this.screens.length) {
             return -1;
         }
@@ -68,7 +68,7 @@ define(['app/view/entry'], function(entry) {
     };
 
     /* Set the current screen */
-    screen.prototype.set_screen = function(screen) {
+    screen_mgr.prototype.set_screen = function(screen) {
         var index = this.screens.indexOf(screen);
         if(index < 0) {
             return -1;
@@ -77,7 +77,7 @@ define(['app/view/entry'], function(entry) {
     };
 
     /* Set the current screen based on array index */
-    screen.prototype.set_screen_by_index = function(index) {
+    screen_mgr.prototype.set_screen_by_index = function(index) {
         // Bounds check
         if(index < 0 || index >= this.screens.length) {
             return -1;
@@ -96,7 +96,7 @@ define(['app/view/entry'], function(entry) {
     };
 
     /* Revert all screens to just the screen element */
-    screen.prototype.clear_all = function() {
+    screen_mgr.prototype.clear_all = function() {
         for(var i = 0; i < this.screens.length; i++) {
             this.screens[i].setAttribute('style', '');
             while(this.screens[i].firstChild) {
@@ -107,7 +107,7 @@ define(['app/view/entry'], function(entry) {
     };
 
     /* Set the size of every screen to be the size of the window */
-    screen.prototype.set_size = function() {
+    screen_mgr.prototype.set_size = function() {
         var height = window.innerHeight.toString() + 'px';
         var width = window.innerWidth.toString() + 'px';
         for(var i = 0; i < this.screens.length; i++) {
@@ -116,5 +116,5 @@ define(['app/view/entry'], function(entry) {
         }
     };
 
-    return screen;
+    return screen_mgr;
 });
