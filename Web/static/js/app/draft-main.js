@@ -1,8 +1,5 @@
-define(function(require) {
-    var ScreenMgr = require('app/view/screen_mgr');
-    var SideBar = require('app/view/sidebar');
-    var DraftContainer = require('app/view/draft_container');
-    var TitleSpan = require('app/view/title_span');
+define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', 'app/view/title_span'],
+    function(ScreenMgr, SideBar, DraftContainer, TitleSpan) {
 
     var screen_mgr = new ScreenMgr();
     var title_screen = screen_mgr.get_current();
