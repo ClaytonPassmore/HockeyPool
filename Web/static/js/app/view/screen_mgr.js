@@ -46,7 +46,7 @@ define(['app/view/entry'], function(entry) {
         if(index < 0) {
             index = this.screens.length - 1;
         }
-        index = (index + 1 + this.screens.length) % this.screens.length;
+        index = (index + this.screens.length - 1) % this.screens.length;
         this.set_screen_by_index(index);
     };
 
