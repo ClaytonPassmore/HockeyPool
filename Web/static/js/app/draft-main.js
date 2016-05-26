@@ -1,7 +1,10 @@
-define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', 'app/view/title_span', 'app/view/dialogue'],
-    function(ScreenMgr, SideBar, DraftContainer, TitleSpan, Dialogue) {
+define(['app/view/entry', 'app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', 'app/view/title_span', 'app/view/dialogue'],
+    function(Entry, ScreenMgr, SideBar, DraftContainer, TitleSpan, Dialogue) {
 
+    var entry = new Entry();
     var screen_mgr = new ScreenMgr();
+    entry.get_element().appendChild(screen_mgr.get_element());
+
     var title_screen = screen_mgr.get_current();
     var teams_screen = screen_mgr.add_screen();
     var draft_screen = screen_mgr.add_screen();

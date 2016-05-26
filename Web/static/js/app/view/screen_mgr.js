@@ -1,7 +1,8 @@
-define(['app/view/entry'], function(entry) {
+define(function() {
     var screen_mgr = function() {
         this.entry = entry;
-        this.element = entry.get_element();
+        this.elem = document.createElement('div');
+        this.elem.setAttribute('class', 'screen_container');
         this.screens = [];
         this.current = null;
 
@@ -12,6 +13,10 @@ define(['app/view/entry'], function(entry) {
         // Add listener for resize events
         window.addEventListener('resize', this.set_size.bind(this));
         return this;
+    };
+
+    screen_mgr.prototype.get_element = function() {
+        return this.elem;
     };
 
     /* Get the current screen */
@@ -26,7 +31,7 @@ define(['app/view/entry'], function(entry) {
         screen.style.display = 'none';
         this.screens.push(screen);
         this.set_size();
-        this.element.appendChild(screen);
+        this.elem.appendChild(screen);
         return screen;
     };
 

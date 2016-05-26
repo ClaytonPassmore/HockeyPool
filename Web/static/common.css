@@ -73,6 +73,11 @@ html, body {
     transform: translate(-50%, -50%);
 }
 
+.screen_container {
+    width: 100%;
+    height: 100%;
+}
+
 .screen {
     background: #222222;
 }
