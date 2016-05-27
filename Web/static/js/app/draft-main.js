@@ -1,18 +1,17 @@
-define(['app/view/entry', 'app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', 'app/view/title_span', 'app/view/dialogue'],
-    function(Entry, ScreenMgr, SideBar, DraftContainer, TitleSpan, Dialogue) {
+define(['app/view/entry', 'app/view/screen_mgr', 'app/view/title_span', 'app/view/dialogue', 'app/view/participants'],
+    function(Entry, ScreenMgr, TitleSpan, Dialogue, Participants) {
 
     var entry = new Entry();
     var screen_mgr = new ScreenMgr();
     entry.get_element().appendChild(screen_mgr.get_element());
 
-    var title_screen = screen_mgr.get_current();
-    var teams_screen = screen_mgr.add_screen();
-    var draft_screen = screen_mgr.add_screen();
-
     var event_queue = [];
     var back_handler = function() {
         if(event_queue.length > 0) {
             event_queue.pop();
+            if(event_queue.length == 1) {
+                participants.pop_participant();
+            }
         }
         screen_mgr.previous();
     };
@@ -20,6 +19,11 @@ define(['app/view/entry', 'app/view/screen_mgr', 'app/view/sidebar', 'app/view/d
         event_queue.push(event);
         screen_mgr.next();
     };
+
+    var title_screen = screen_mgr.get_current();
+    var teams_screen = screen_mgr.add_screen();
+    var participants_screen = screen_mgr.add_screen();
+    var rounds_screen = screen_mgr.add_screen();
 
     title_span = new TitleSpan('Welcome to the Draft');
     title_screen.appendChild(title_span.get_element());
@@ -31,12 +35,15 @@ define(['app/view/entry', 'app/view/screen_mgr', 'app/view/sidebar', 'app/view/d
     num_teams_dialogue.add_button_listener(button_handler);
     teams_screen.appendChild(num_teams_dialogue.get_element());
 
-    sidebar = new SideBar();
-    sidebar.hide();
-    sidebar.set_title("Clayton's Picks");
-    sidebar.set_items(['Sydney Crosby', 'Snoop Dogg', 'Kobe Bryant', 'Lebron James']);
+    // TODO Really need a better name for this
+    var participants = new Participants();
+    participants_screen.appendChild(participants.get_element());
+    participants.add_submit_listener(button_handler);
+    participants.add_back_listener(back_handler);
+    num_teams_dialogue.add_button_listener(participants.set_num_teams.bind(participants));
 
-    draft_container = new DraftContainer();
-    draft_screen.appendChild(sidebar.get_element());
-    draft_screen.appendChild(draft_container.get_element());
+    var num_rounds_dialogue = new Dialogue('How many rounds will there be?', input_props);
+    num_rounds_dialogue.add_back_listener(back_handler);
+    num_rounds_dialogue.add_button_listener(button_handler);
+    rounds_screen.appendChild(num_rounds_dialogue.get_element());
 });

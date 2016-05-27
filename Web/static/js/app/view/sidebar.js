@@ -1,5 +1,5 @@
 define(function() {
-    var sidebar = function() {
+    var sidebar = function(title) {
         this.elem = document.createElement("div");
         this.elem.setAttribute('class', 'sidebar');
 
@@ -23,6 +23,8 @@ define(function() {
         this.inner_elem.appendChild(this.list_container_elem);
         this.outer_elem.appendChild(this.inner_elem);
         this.elem.appendChild(this.outer_elem);
+
+        this.set_title(title);
         return this
     };
 

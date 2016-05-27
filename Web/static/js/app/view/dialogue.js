@@ -7,11 +7,21 @@ define(function() {
         this.title_elem = document.createElement('div');
         this.title_elem.setAttribute('class', 'dialogue_title');
         this.input_elem = document.createElement('input');
-        this.input_elem.setAttribute('class', 'dialogue_input');
+        this.input_elem.setAttribute('class', 'dialogue_input_default');
         this.button_elem = document.createElement('div');
         this.button_elem.setAttribute('class', 'dialogue_button');
         this.back_elem = document.createElement('div');
         this.back_elem.setAttribute('class', 'dialogue_back');
+
+        if(input_attrs.type) {
+            if(input_attrs.type == 'text') {
+                this.input_elem.setAttribute('class', 'dialogue_input_text');
+            }
+            else if(input_attrs.type == 'number') {
+                this.input_elem.setAttribute('class', 'dialogue_input_number');
+            }
+        }
+        this.input_elem.addEventListener('keydown', this.input_listener.bind(this));
 
         this.set_title(title);
         for(key in input_attrs) {
@@ -37,6 +47,12 @@ define(function() {
         return this.elem;
     };
 
+    dialogue.prototype.input_listener = function(event) {
+        if(event && event.keyCode && event.keyCode == 13) {
+            this.button_event();
+        }
+    };
+
     dialogue.prototype.set_title = function(title) {
         this.title_elem.innerText = title;
     };
@@ -50,15 +66,25 @@ define(function() {
     };
 
     dialogue.prototype.button_event = function() {
+        this.input_elem.focus();
         for(idx in this.button_listeners) {
-            this.button_listeners[idx].call();
+            this.button_listeners[idx](this.input_elem.value);
         }
     };
 
     dialogue.prototype.back_event = function() {
+        this.input_elem.focus();
         for(idx in this.back_listeners) {
-            this.back_listeners[idx].call();
+            this.back_listeners[idx]();
         }
+    };
+
+    dialogue.prototype.clear_input = function() {
+        this.input_elem.value = '';
+    };
+
+    dialogue.prototype.set_input = function(value) {
+        this.input_elem.value = value;
     };
 
     return dialogue;
