@@ -70,7 +70,8 @@ html, body {
 .dialogue_back {
     font-size: 15px;
     cursor: pointer;
-    margin: 5px;
+    margin: 5px auto;
+    width: 100px;
 }
 
 .title_span {
@@ -136,74 +137,6 @@ html, body {
 
 .sidebar_list {}
 .sidebar_list_item {}
-
-.participant-div {
-    background-color: white;
-    max-height: 80%;
-    min-width: 600px;
-    max-width: 50%;
-    border-radius: 25px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.title {
-    width: 100%;
-    text-align: center;
-    margin-top: 30px;
-    margin-bottom: 30px;
-}
-
-.big-number-input {
-    line-height: 100px;
-    font-size: 100px;
-    width: 150px;
-    text-align: center;
-    position: relative;
-    left: 50%;
-    transform: translate(-50%, 0);
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-.big-text-input {
-    line-height: 75px;
-    font-size: 60px;
-    width: 400px;
-    text-align: center;
-    position: relative;
-    left: 50%;
-    transform: translate(-50%, 0);
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-.text-input {
-    line-height: 40px;
-    font-size: 30px;
-    text-align: left;
-    /*position: relative;
-    left: 50%;
-    transform: translate(-50%, 0);
-    margin-top: 20px;
-    margin-bottom: 20px;*/
-}
-
-.blue-submit-button {
-    cursor: pointer;
-    width: 100px;
-    height: 30px;
-    text-align: center;
-    background-color: #080B3B;
-    margin: 30px auto 30px auto;
-    color: white;
-    font-size: 25px;
-    line-height: 30px;
-    border-radius: 10px;
-    padding: 5px;
-}
 
 .tt-dataset {
     padding-left: 5px;
