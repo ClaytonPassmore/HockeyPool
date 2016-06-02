@@ -9,9 +9,6 @@ define(['app/view/entry', 'app/view/screen_mgr', 'app/view/title_span', 'app/vie
     var back_handler = function() {
         if(event_queue.length > 0) {
             event_queue.pop();
-            if(event_queue.length == 1) {
-                participants.pop_participant();
-            }
         }
         screen_mgr.previous();
     };

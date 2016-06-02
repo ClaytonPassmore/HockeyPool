@@ -51,10 +51,18 @@ define(['app/view/draft_container', 'app/view/sidebar', 'app/view/dialogue'],
         if(!participant || participant == '') {
             return;
         }
+
         this.participants.push(participant);
         this.sidebar.set_items(this.participants);
         this.dialogue.set_input('');
-        if(this.participants.length >= this.num_teams) {
+
+        if(this.participants.length == this.num_teams) {
+            this.dialogue.show_input(false);
+            this.dialogue.set_input('__filler__');
+            this.dialogue.set_title('Does this look right to you?');
+        } else if(this.participants.length > this.num_teams) {
+            this.participants.pop();  // Remove our filler input
+            this.sidebar.set_items(this.participants);
             this.submit_event();
         } else {
             this.dialogue.set_title('Enter name for team #' +
@@ -69,6 +77,7 @@ define(['app/view/draft_container', 'app/view/sidebar', 'app/view/dialogue'],
         if(popped == undefined) {
             this.back_event();
         } else {
+            this.dialogue.show_input(true);
             this.dialogue.set_title('Enter name for team #' +
                                     (this.participants.length + 1).toString());
         }

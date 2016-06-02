@@ -87,5 +87,13 @@ define(function() {
         this.input_elem.value = value;
     };
 
+    dialogue.prototype.show_input = function(show) {
+        if(show) {
+            this.input_elem.style = '';
+        } else {
+            this.input_elem.style = 'display: none;';
+        }
+    }
+
     return dialogue;
 });
