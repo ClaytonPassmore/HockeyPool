@@ -44,6 +44,7 @@ define(['app/view/entry', 'app/view/screen_mgr', 'app/view/title_span', 'app/vie
     num_rounds_dialogue.add_button_listener(button_handler);
     rounds_screen.appendChild(num_rounds_dialogue.get_element());
 
+    // TODO
     var draft_screen = screen_mgr.add_screen();
     var confirm_screen = screen_mgr.add_screen();
     var finish_screen = screen_mgr.add_screen();
