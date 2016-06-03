@@ -63,6 +63,7 @@ define(['app/view/draft_container', 'app/view/sidebar', 'app/view/dialogue'],
         } else if(this.participants.length > this.num_teams) {
             this.participants.pop();  // Remove our filler input
             this.sidebar.set_items(this.participants);
+            this.dialogue.set_input('__filler__'); // Set filler incase we come back
             this.submit_event();
         } else {
             this.dialogue.set_title('Enter name for team #' +
