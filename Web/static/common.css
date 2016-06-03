@@ -98,7 +98,6 @@ html, body {
     overflow: hidden;
     box-sizing: border-box;
     height: 100%;
-    padding: 20px;
 }
 
 .sidebar {
@@ -106,7 +105,6 @@ html, body {
     min-width: 300px;
     max-width: 500px;
     float: left;
-    padding: 20px 0 20px 20px;
     box-sizing: border-box;
 }
 
