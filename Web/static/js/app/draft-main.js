@@ -1,5 +1,5 @@
-define(['app/view/entry', 'app/view/screen_mgr', 'app/view/title_span', 'app/view/dialogue', 'app/view/participants'],
-    function(Entry, ScreenMgr, TitleSpan, Dialogue, Participants) {
+define(['app/view/entry', 'app/view/screen_mgr', 'app/view/title_span', 'app/view/dialogue', 'app/view/participants', 'app/view/draft'],
+    function(Entry, ScreenMgr, TitleSpan, Dialogue, Participants, Draft) {
 
     var entry = new Entry();
     var screen_mgr = new ScreenMgr();
@@ -44,8 +44,11 @@ define(['app/view/entry', 'app/view/screen_mgr', 'app/view/title_span', 'app/vie
     num_rounds_dialogue.add_button_listener(button_handler);
     rounds_screen.appendChild(num_rounds_dialogue.get_element());
 
-    // TODO
     var draft_screen = screen_mgr.add_screen();
+    var draft = new Draft();
+    draft_screen.appendChild(draft.get_element());
+
+    // TODO
     var confirm_screen = screen_mgr.add_screen();
     var finish_screen = screen_mgr.add_screen();
 });

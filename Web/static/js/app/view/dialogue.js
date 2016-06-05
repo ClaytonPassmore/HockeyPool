@@ -1,5 +1,8 @@
 define(function() {
     var dialogue = function(title, input_attrs) {
+        title = title || '';
+        input_attrs = input_attrs || {};
+
         this.elem = document.createElement('div');
         this.elem.setAttribute('class', 'dialogue');
         this.inner_elem = document.createElement('class', 'dialogue');

@@ -1,5 +1,7 @@
 define(function() {
     var sidebar = function(title) {
+        title = title || '';
+
         this.elem = document.createElement("div");
         this.elem.setAttribute('class', 'sidebar');
 
