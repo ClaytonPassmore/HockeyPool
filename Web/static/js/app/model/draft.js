@@ -1,5 +1,46 @@
-define(function() {
-    var server_addr = 'http://localhost:5000/rest';
+define(['app/model/snake'], function(SnakeModel) {
+    var draft =  function(teams, rounds) {
+        this.teams = teams || undefined;
+        this.rounds = rounds || undefined;
+        this.snake = undefined;
+        this.listeners = [];
+
+        if(teams && rounds) {
+            this.snake = new SnakeModel(teams, rounds);
+            this.call_listeners();
+        }
+        return this;
+    };
+
+    draft.prototype.set_teams = function(teams) {
+        this.teams = teams;
+        if(this.rounds && teams) {
+            this.snake = new SnakeModel(teams, this.rounds);
+        }
+        this.call_listeners();
+    };
+
+    draft.prototype.set_rounds = function(rounds) {
+        this.rounds = rounds;
+        if(this.teams && rounds) {
+            this.snake = new SnakeModel(this.teams, rounds);
+        }
+        this.call_listeners();
+    };
+
+    draft.prototype.add_listener = function(listener) {
+        this.listeners.push(listener);
+    };
+
+    draft.prototype.call_listeners = function() {
+        for(idx in this.listeners) {
+            this.listeners[idx]();
+        }
+    };
+
+    return draft;
+
+    /*var server_addr = 'http://localhost:5000/rest';
     var data = {
         init: function() {
             this.teams = {};
@@ -35,5 +76,5 @@ define(function() {
     };
 
     data.init();
-    return data;
+    return data;*/
 });
