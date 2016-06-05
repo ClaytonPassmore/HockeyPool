@@ -5,7 +5,7 @@ define(function() {
 
         this.elem = document.createElement('div');
         this.elem.setAttribute('class', 'dialogue');
-        this.inner_elem = document.createElement('class', 'dialogue');
+        this.inner_elem = document.createElement('div');
         this.inner_elem.setAttribute('class', 'dialogue_inner');
         this.title_elem = document.createElement('div');
         this.title_elem.setAttribute('class', 'dialogue_title');

@@ -1,9 +1,9 @@
 define(['app/model/snake'], function(SnakeModel) {
     var draft =  function(teams, rounds) {
-        this.teams = teams || undefined;
-        this.rounds = rounds || undefined;
-        this.snake = undefined;
         this.listeners = [];
+        this.set_teams(teams || undefined);
+        this.set_rounds(rounds || undefined);
+        this.snake = undefined;
 
         if(teams && rounds) {
             this.snake = new SnakeModel(teams, rounds);
