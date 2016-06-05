@@ -7,6 +7,7 @@ define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', '
     // Sidebar
     // Screen ^
     // Screen for other teams' picks
+    // Buttons to switch between screens
 
     var draft = function() {
         this.screen_mgr = new ScreenMgr();
