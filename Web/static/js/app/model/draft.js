@@ -1,6 +1,8 @@
 define(['app/model/snake'], function(SnakeModel) {
     var draft =  function(teams, rounds) {
         this.listeners = [];
+        this.selections = [];
+        this.team_selections = {};
         this.set_teams(teams || undefined);
         this.set_rounds(rounds || undefined);
         this.snake = undefined;
@@ -14,6 +16,10 @@ define(['app/model/snake'], function(SnakeModel) {
 
     draft.prototype.set_teams = function(teams) {
         this.teams = teams;
+        this.team_selections = {};
+        for(idx in teams) {
+            this.team_selections[teams[idx]] = [];
+        }
         if(this.rounds && teams) {
             this.snake = new SnakeModel(teams, this.rounds);
         }
@@ -35,6 +41,22 @@ define(['app/model/snake'], function(SnakeModel) {
     draft.prototype.call_listeners = function() {
         for(idx in this.listeners) {
             this.listeners[idx]();
+        }
+    };
+
+    draft.prototype.push_selection = function(team, player) {
+        this.team_selections[team].push(player);
+        this.selections.push([team, player]);
+    };
+
+    draft.prototype.pop_selection = function() {
+        var popped = this.selections.pop();
+        if(!popped) {
+            return;
+        }
+        var team_popped = this.team_selections[popped[0]].pop();
+        if(popped[1] != team_popped) {
+            console.error('Popped players differ');
         }
     };
 

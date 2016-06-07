@@ -54,6 +54,8 @@ define(['app/view/entry', 'app/view/screen_mgr', 'app/view/title_span', 'app/vie
 
     var draft_screen = screen_mgr.add_screen();
     var draft = new Draft(draft_model);
+    draft.add_forward_listener(button_handler);
+    draft.add_back_listener(back_handler);
     draft_screen.appendChild(draft.get_element());
 
     // TODO
