@@ -19,6 +19,8 @@ define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', '
         this.draft_screen = this.screen_mgr.get_current();
         this.sidebar = new Sidebar();
         this.draft_container = new DraftContainer();
+        this.rounds_counter = document.createElement('div');
+        this.rounds_counter.setAttribute('class', 'rounds_counter');
 
         this.dialogue = new Dialogue();
         this.dialogue.add_button_listener(this.submit_handler.bind(this));
@@ -27,6 +29,7 @@ define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', '
         this.draft_screen.appendChild(this.sidebar.get_element());
         this.draft_screen.appendChild(this.draft_container.get_element());
         this.draft_container.get_element().appendChild(this.dialogue.get_element());
+        this.draft_container.get_element().appendChild(this.rounds_counter);
 
         this.picks_screen = this.screen_mgr.add_screen();
         return this;
@@ -47,6 +50,7 @@ define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', '
             this.dialogue.set_input('');
             this.set_sidebar_title(this.current_picker);
             this.sidebar.set_items(this.model.team_selections[this.current_picker]);
+            this.set_rounds_counter(this.model.snake.get_current_round(), this.model.snake.get_rounds());
         }
     };
 
@@ -61,6 +65,7 @@ define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', '
             this.dialogue.set_input('');
             this.set_sidebar_title(this.current_picker);
             this.sidebar.set_items(this.model.team_selections[this.current_picker]);
+            this.set_rounds_counter(this.model.snake.get_current_round(), this.model.snake.get_rounds());
         }
     };
 
@@ -113,6 +118,10 @@ define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', '
             this.back_listeners[idx]();
         };
     };
+
+    draft.prototype.set_rounds_counter = function(current, total) {
+        this.rounds_counter.innerText = 'Round ' + current.toString() + ' of ' + total.toString();
+    }
 
     return draft;
 });
