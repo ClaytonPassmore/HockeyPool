@@ -27,7 +27,6 @@ define(function() {
         this.elem.appendChild(this.outer_elem);
 
         this.set_title(title);
-        this.set_items(['AINT NOTHIN HERE YO!']);
         return this
     };
 
