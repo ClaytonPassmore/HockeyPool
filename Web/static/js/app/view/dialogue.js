@@ -17,10 +17,10 @@ define(function() {
         this.back_elem.setAttribute('class', 'dialogue_back');
 
         if(input_attrs.type) {
-            if(input_attrs.type == 'text') {
+            if(input_attrs.type == 'text' && !input_attrs.class) {
                 this.input_elem.setAttribute('class', 'dialogue_input_text');
             }
-            else if(input_attrs.type == 'number') {
+            else if(input_attrs.type == 'number' && !input_attrs.class) {
                 this.input_elem.setAttribute('class', 'dialogue_input_number');
             }
         }

@@ -1,16 +1,14 @@
-define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', 'app/view/dialogue'],
-    function(ScreenMgr, Sidebar, DraftContainer, Dialogue) {
+define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', 'app/view/dialogue', 'jquery', 'typeahead'],
+    function(ScreenMgr, Sidebar, DraftContainer, Dialogue, $, typeahead) {
 
     // TODO:
-    // Bloodhound / TypeAhead module
     // Queue
-    // Sidebar
-    // Screen ^
     // Screen for other teams' picks
     // Buttons to switch between screens
 
-    var draft = function(draft_model) {
+    var draft = function(draft_model, bloodhound) {
         this.model = draft_model;
+        this.bloodhound = bloodhound;
         this.forward_listeners = [];
         this.back_listeners = [];
         this.model.add_listener(this.advance_snake.bind(this));
@@ -22,7 +20,10 @@ define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', '
         this.rounds_counter = document.createElement('div');
         this.rounds_counter.setAttribute('class', 'rounds_counter');
 
-        this.dialogue = new Dialogue();
+        this.dialogue = new Dialogue(
+            undefined,
+            {id: 'typeahead', class: 'dialogue_typeahead_input'}
+        );
         this.dialogue.add_button_listener(this.submit_handler.bind(this));
         this.dialogue.add_back_listener(this.back_handler.bind(this));
 
@@ -30,6 +31,17 @@ define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', '
         this.draft_screen.appendChild(this.draft_container.get_element());
         this.draft_container.get_element().appendChild(this.dialogue.get_element());
         this.draft_container.get_element().appendChild(this.rounds_counter);
+
+        $(this.dialogue.input_elem).typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        },
+        {
+            name: 'Players',
+            display: 'name',
+            source: this.bloodhound.get_bloodhound()
+        });
 
         this.picks_screen = this.screen_mgr.add_screen();
         return this;
@@ -47,7 +59,7 @@ define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', '
                 return;
             }
             this.set_dialogue_title(this.current_picker);
-            this.dialogue.set_input('');
+            $(this.dialogue.input_elem).typeahead('val', '');
             this.set_sidebar_title(this.current_picker);
             this.sidebar.set_items(this.model.team_selections[this.current_picker]);
             this.set_rounds_counter(this.model.snake.get_current_round(), this.model.snake.get_rounds());
@@ -62,7 +74,7 @@ define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', '
                 return;
             }
             this.set_dialogue_title(this.current_picker);
-            this.dialogue.set_input('');
+            $(this.dialogue.input_elem).typeahead('val', '');
             this.set_sidebar_title(this.current_picker);
             this.sidebar.set_items(this.model.team_selections[this.current_picker]);
             this.set_rounds_counter(this.model.snake.get_current_round(), this.model.snake.get_rounds());

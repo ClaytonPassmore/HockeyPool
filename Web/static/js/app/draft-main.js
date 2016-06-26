@@ -1,5 +1,5 @@
-define(['app/view/entry', 'app/view/screen_mgr', 'app/view/title_span', 'app/view/dialogue', 'app/view/participants', 'app/view/draft', 'app/model/draft'],
-    function(Entry, ScreenMgr, TitleSpan, Dialogue, Participants, Draft, DraftModel) {
+define(['app/view/entry', 'app/view/screen_mgr', 'app/view/title_span', 'app/view/dialogue', 'app/view/participants', 'app/view/draft', 'app/model/draft', 'app/model/bloodhound', 'bloodhound'],
+    function(Entry, ScreenMgr, TitleSpan, Dialogue, Participants, Draft, DraftModel, Bloodhound, bloodhound) {
 
     var entry = new Entry();
     var screen_mgr = new ScreenMgr();
@@ -53,7 +53,11 @@ define(['app/view/entry', 'app/view/screen_mgr', 'app/view/title_span', 'app/vie
     });
 
     var draft_screen = screen_mgr.add_screen();
-    var draft = new Draft(draft_model);
+    var test_bloodhound = new Bloodhound(
+        [{name: 'Clayton'}, {name: 'Scott'}],
+        bloodhound.tokenizers.obj.whitespace('name')
+    );
+    var draft = new Draft(draft_model, test_bloodhound);
     draft.add_forward_listener(button_handler);
     draft.add_back_listener(back_handler);
     draft_screen.appendChild(draft.get_element());

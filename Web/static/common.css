@@ -35,6 +35,8 @@ html, body {
 .dialogue_inner {
     border: 1px solid white;
     display: block;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 .dialogue_title {
@@ -42,6 +44,7 @@ html, body {
     font-size: 30px;
 }
 
+.dialogue_typeahead_input
 .dialogue_input_default,
 .dialogue_input_number,
 .dialogue_input_text {
@@ -54,8 +57,13 @@ html, body {
 
 .dialogue_input_default,
 .dialogue_input_text {
-    width: 90%;
+    width: 100%;
     text-align: center;
+    box-sizing: border-box;
+}
+
+.dialogue_typeahead_input {
+    text-align: left;
 }
 
 .dialogue_button {
@@ -157,7 +165,6 @@ html, body {
     font-size: 24px;
     line-height: 30px;
     border: 2px solid #ccc;
-    border-radius: 8px;
     outline: none;
 }
 
@@ -171,16 +178,15 @@ html, body {
 
 .tt-menu {
     width: 422px;
-    margin-top: 12px;
     padding: 8px 0;
     background-color: #fff;
     border: 1px solid #ccc;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
     box-shadow: 0 5px 10px rgba(0,0,0,.2);
 
     max-height: 200px;
     overflow-y: auto;
+    text-align: left;
 }
 
 .tt-suggestion {
@@ -189,8 +195,9 @@ html, body {
     line-height: 24px;
 }
 
-.tt-suggestion.tt-cursor {
-    color: #fff;
+.tt-suggestion,
+.tt-cursor {
+    color: #000;
     background-color: #0097cf;
 }
 
