@@ -187,6 +187,7 @@ html, body {
     max-height: 200px;
     overflow-y: auto;
     text-align: left;
+    color: #000;
 }
 
 .tt-suggestion {
@@ -195,8 +196,7 @@ html, body {
     line-height: 24px;
 }
 
-.tt-suggestion,
-.tt-cursor {
+.tt-suggestion.tt-cursor {
     color: #000;
     background-color: #0097cf;
 }

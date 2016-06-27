@@ -6,9 +6,10 @@ define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', '
     // Screen for other teams' picks
     // Buttons to switch between screens
 
-    var draft = function(draft_model, bloodhound) {
+    var draft = function(draft_model, player_bloodhound, team_bloodhound) {
         this.model = draft_model;
-        this.bloodhound = bloodhound;
+        this.player_bloodhound = player_bloodhound;
+        this.team_bloodhound = team_bloodhound;
         this.forward_listeners = [];
         this.back_listeners = [];
         this.model.add_listener(this.advance_snake.bind(this));
@@ -40,7 +41,21 @@ define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', '
         {
             name: 'Players',
             display: 'name',
-            source: this.bloodhound.get_bloodhound()
+            source: this.player_bloodhound.get_bloodhound(),
+            templates: {
+                header: '<h3>Players</h3>',
+                suggestion: function(d) {
+                    return '<div><strong>' + d.name + '</strong> - ' + d.team + '</div>';
+                }
+            }
+        },
+        {
+            name: 'Goalies',
+            display: 'name',
+            source: this.team_bloodhound.get_bloodhound(),
+            templates: {
+                header: '<h3>Goalies</h3>'
+            }
         });
 
         this.picks_screen = this.screen_mgr.add_screen();
