@@ -21,4 +21,4 @@ initdb:
 	python SQL/create.py
 
 ubuntu:
-	sudo apt-get install mysql-server python-pip build-essential python-dev libmysqlclient-dev
+	sudo apt-get install mysql-server python-pip build-essential python-dev libmysqlclient-dev python-mysqldb
