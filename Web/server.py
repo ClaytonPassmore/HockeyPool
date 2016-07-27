@@ -52,7 +52,7 @@ def rest():
         # Decode unicode strings
         for i in range(len(players)):
             dic = {}
-            dic[u'id'] = teams[i][0]
+            dic[u'id'] = players[i][0]
             dic[u'name'] = players[i][1].decode('utf-8')
             dic[u'team'] = players[i][2].decode('utf-8')
             players[i] = dic
@@ -63,6 +63,7 @@ def rest():
         return response
     except:
         logging.exception('Unable to fetch data from DB')
+        flask.abort(500)
         return
 
 @app.route('/')

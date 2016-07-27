@@ -20,9 +20,11 @@ def insert_data_in_db(sql_con, URL, table_name):
     try:
         js = SD.fetchJSON(URL)
     except:
+        logging.exception('Could not fetch JSON')
         return -1
 
-    if not js or len(js['data']) == 0:
+    if not js or not js.get('data'):
+        logging.error('JSON object contains no data')
         return -1
 
     # Only populate entries with a small subset of keys
@@ -34,7 +36,7 @@ def insert_data_in_db(sql_con, URL, table_name):
         columns = ['id', 'playerName', 'playerTeamsPlayedFor']
 
     # Start building the query
-    query = u'INSERT INTO {} ({}) VALUES '.format(table_name, columns)
+    query = u'INSERT INTO {} ({}) VALUES '.format(table_name, ','.join(columns))
 
     # Add the data from each entry to the query
     for i in range(len(js['data'])):
@@ -53,6 +55,7 @@ def insert_data_in_db(sql_con, URL, table_name):
     sql_con.autocommit(False)
     cursor = sql_con.cursor()
     if not cursor:
+        logging.error('Could not create cursor')
         return -1
 
     # Run the transaction
@@ -63,6 +66,7 @@ def insert_data_in_db(sql_con, URL, table_name):
     except:
         sql_con.rollback()
         cursor.close()
+        logging.exception('Could execute transaction to populate DB')
         return -1
 
     cursor.close()
