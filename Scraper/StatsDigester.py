@@ -45,5 +45,3 @@ class StatsDigester:
         fd = urllib.urlopen(URL)
         ret = fd.read()
         return json.loads(ret)
-
-
