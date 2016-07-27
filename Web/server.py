@@ -1,4 +1,5 @@
 import json
+import logging
 
 import flask
 import MySQLdb
@@ -25,8 +26,8 @@ def draft():
 def rest():
     try:
         global db
-        player_query = "SELECT playerName, playerTeamsPlayedFor FROM players"
-        team_query = "SELECT teamFullName, teamAbbrev FROM teams"
+        player_query = "SELECT id, playerName, playerTeamsPlayedFor FROM players"
+        team_query = "SELECT id, teamFullName, teamAbbrev FROM teams"
 
         # Query for teams
         db.query(team_query)
@@ -37,8 +38,9 @@ def rest():
         # Decode unicode strings
         for i in range(len(teams)):
             dic = {}
-            dic[u'name'] = teams[i][0].decode('utf-8')
-            dic[u'short'] = teams[i][1].decode('utf-8')
+            dic[u'id'] = teams[i][0]
+            dic[u'name'] = teams[i][1].decode('utf-8')
+            dic[u'short'] = teams[i][2].decode('utf-8')
             teams[i] = dic
 
         # Query for players
@@ -50,8 +52,9 @@ def rest():
         # Decode unicode strings
         for i in range(len(players)):
             dic = {}
-            dic[u'name'] = players[i][0].decode('utf-8')
-            dic[u'team'] = players[i][1].decode('utf-8')
+            dic[u'id'] = teams[i][0]
+            dic[u'name'] = players[i][1].decode('utf-8')
+            dic[u'team'] = players[i][2].decode('utf-8')
             players[i] = dic
 
         # Encode the result in unicode
@@ -59,6 +62,7 @@ def rest():
         response = flask.make_response(result)
         return response
     except:
+        logging.exception('Unable to fetch data from DB')
         return
 
 @app.route('/')

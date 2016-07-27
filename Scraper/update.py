@@ -21,9 +21,11 @@ def update_table(sql_con, URL, table_name):
     try:
         js = SD.fetchJSON(URL)
     except:
+        logging.exception('Could not fetch JSON')
         return -1
 
-    if not js or len(js['data']) == 0:
+    if not js or not js.get('data'):
+        logging.error('JSON contained no data')
         return -1
 
     if table_name == 'teams':
@@ -33,9 +35,9 @@ def update_table(sql_con, URL, table_name):
 
     # If NHL changes their column names, we're SOL.
     keys = js['data'][0].keys()
-    columns = ','.join(list(set(keys) - set([id_key])))
+    columns = list(set(keys) - set([id_key]))
 
-    query = u'UPDATE {} SET {} WHERE {}={}'
+    query = u'UPDATE {} SET {} WHERE id={}'
     query_list = []
 
     for item in js['data']:
@@ -50,11 +52,12 @@ def update_table(sql_con, URL, table_name):
             if k < (len(columns) - 1):
                 string += ','
         # Add the query to the list of queries.
-        query_list.append(query.format(table_name, string, id_key, item[id_key]))
+        query_list.append(query.format(table_name, string, item[id_key]))
 
     # Get a cursor from the database connection
     cursor = sql_con.cursor()
     if not cursor:
+        logging.error('Could not create DB cursor')
         return -1
 
     # Run the transaction
@@ -65,6 +68,7 @@ def update_table(sql_con, URL, table_name):
         except:
             sql_con.rollback()
             cursor.close()
+            logging.exception('Could not update a row')
             return -1
 
     # Commit the changes
@@ -73,6 +77,7 @@ def update_table(sql_con, URL, table_name):
     except:
         sql_con.rollback()
         cursor.close()
+        logging.exception('Could not perform the update transaction')
         return -1
 
     # Close the cursor
@@ -87,7 +92,7 @@ def main():
     fd = open('season.cfg', 'r')
 
     if not fd:
-        logging.error('Could not open config file. Abort.')
+        logging.error('Could not open config file')
         return -1
 
     # Read the data from the config file.
@@ -102,7 +107,7 @@ def main():
         if season_type != REGULAR_SEASON_ID and season_type != PLAYOFFS_ID:
             raise Exception('Invalid season type')
     except:
-        logging.error('Invalid contents in config file. Abort.')
+        logging.error('Invalid contents in config file')
         return -1
 
     # Create the URLs to retrieve data from.
@@ -118,7 +123,7 @@ def main():
         db=DBConfig.DB)
 
     if not db:
-        logging.error('Unable to connect to DB. Abort.')
+        logging.error('Unable to connect to DB')
         return -1
 
     db.autocommit(False)
@@ -127,7 +132,7 @@ def main():
     if (update_table(db, teamURL, 'teams') or
             update_table(db, playerURL, 'players') or
             update_table(db, goalieURL, 'goalies')):
-        logging.error('Unable to update database. Abort.')
+        logging.error('Unable to update database')
         return -1
 
     # Close the connection to the database.

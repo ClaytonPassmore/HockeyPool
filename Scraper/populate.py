@@ -34,7 +34,7 @@ def insert_data_in_db(sql_con, URL, table_name):
         columns = ['id', 'playerName', 'playerTeamsPlayedFor']
 
     # Start building the query
-    query = u'INSERT INTO {} ({}) VALUES 'format(table_name, columns)
+    query = u'INSERT INTO {} ({}) VALUES '.format(table_name, columns)
 
     # Add the data from each entry to the query
     for i in range(len(js['data'])):
