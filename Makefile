@@ -22,3 +22,5 @@ initdb:
 
 ubuntu:
 	sudo apt-get install mysql-server python-pip build-essential python-dev libmysqlclient-dev python-mysqldb
+
+.PHONY: depends run init updatedb populatedb initdb ubuntu
