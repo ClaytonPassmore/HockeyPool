@@ -61,3 +61,6 @@ target/
 
 # Config files
 *.cfg
+
+# ctags
+tags
