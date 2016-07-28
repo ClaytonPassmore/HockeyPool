@@ -22,5 +22,22 @@ define(['bloodhound'], function(Bloodhound) {
         return this.bloodhound;
     };
 
+    bloodhound.prototype.remove = function(item) {
+        var data = this.bloodhound.local;
+        for(idx in data) {
+            if(item == data[idx]) {
+                data.splice(idx, 1);
+                break;
+            }
+        }
+        this.set_data(data);
+    };
+
+    bloodhound.prototype.add = function(item) {
+        var data = this.bloodhound.local;
+        data.push(item);
+        this.set_data(data);
+    };
+
     return bloodhound;
 });

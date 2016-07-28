@@ -72,7 +72,6 @@ define(function() {
     dialogue.prototype.button_event = function() {
         this.input_elem.focus();
         if (this.validator != null && !this.validator(this.input_elem.value)) {
-            // TODO
             return;
         }
         for(idx in this.button_listeners) {

@@ -57,7 +57,9 @@ define(['app/model/snake'], function(SnakeModel) {
         var team_popped = this.team_selections[popped[0]].pop();
         if(popped[1] != team_popped) {
             console.error('Popped players differ');
+            return;
         }
+        return team_popped;
     };
 
     return draft;

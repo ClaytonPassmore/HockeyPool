@@ -171,11 +171,27 @@ define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', '
             console.error('Player name does not match most recently selected');
         }
         this.model.push_selection(this.current_picker, this.most_recent_selection);
+
+        // TODO: Use a better way to distinguish which bloodhound it came from
+        if(this.most_recent_selection.short) {
+            this.team_bloodhound.remove(this.most_recent_selection);
+        } else {
+            this.player_bloodhound.remove(this.most_recent_selection);
+        }
+        this.most_recent_selection = null;
         this.advance_snake();
     };
 
     draft.prototype.back_handler = function() {
-        this.model.pop_selection();
+        var item = this.model.pop_selection();
+        if(item) {
+            // TODO: Use a better way to distinguish which bloodhound it came from
+            if(item.short) {
+                this.team_bloodhound.add(item);
+            } else {
+                this.player_bloodhound.add(item);
+            }
+        }
         this.go_back_snake();
     };
 
