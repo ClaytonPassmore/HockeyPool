@@ -1,7 +1,8 @@
 define(function() {
-    var dialogue = function(title, input_attrs) {
+    var dialogue = function(title, input_attrs, validator) {
         title = title || '';
         input_attrs = input_attrs || {};
+        this.validator = validator || null;
 
         this.elem = document.createElement('div');
         this.elem.setAttribute('class', 'dialogue');
@@ -70,6 +71,10 @@ define(function() {
 
     dialogue.prototype.button_event = function() {
         this.input_elem.focus();
+        if (this.validator != null && !this.validator(this.input_elem.value)) {
+            // TODO
+            return;
+        }
         for(idx in this.button_listeners) {
             this.button_listeners[idx](this.input_elem.value);
         }
@@ -96,7 +101,7 @@ define(function() {
         } else {
             this.input_elem.style = 'display: none;';
         }
-    }
+    };
 
     return dialogue;
 });

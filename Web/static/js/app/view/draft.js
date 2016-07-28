@@ -13,6 +13,7 @@ define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', '
         this.forward_listeners = [];
         this.back_listeners = [];
         this.model.add_listener(this.advance_snake.bind(this));
+        this.most_recent_selection = null;
 
         this.screen_mgr = new ScreenMgr();
         this.draft_screen = this.screen_mgr.get_current();
@@ -23,7 +24,8 @@ define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', '
 
         this.dialogue = new Dialogue(
             undefined,
-            {id: 'typeahead', class: 'dialogue_typeahead_input'}
+            {id: 'typeahead', class: 'dialogue_typeahead_input'},
+            this.input_validator.bind(this)
         );
         this.dialogue.add_button_listener(this.submit_handler.bind(this));
         this.dialogue.add_back_listener(this.back_handler.bind(this));
@@ -58,9 +60,52 @@ define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', '
             }
         });
 
+
+        $(this.dialogue.input_elem).bind(
+            'typeahead:select typeahead:autocomplete typeahead:cursorchange',
+            function(e, suggestion) {
+                this.most_recent_selection = suggestion;
+                return suggestion
+            }.bind(this)
+        );
+
         this.picks_screen = this.screen_mgr.add_screen();
         return this;
-    }
+    };
+
+    draft.prototype.input_validator = function(input) {
+        if(!input) {
+            return false;
+        }
+
+        if(this.most_recent_selection != null && input == this.most_recent_selection.name) {
+            return true;
+        }
+
+        var candidate = null;
+        var suggestion_filterer = function(suggestions) {
+            for(idx in suggestions) {
+                if(candidate == null && suggestions[idx].name == input) {
+                    candidate = suggestions[idx];
+                }
+            }
+        };
+
+        this.team_bloodhound.get_bloodhound().search(input, suggestion_filterer);
+        if(candidate != null) {
+            this.most_recent_selection = candidate;
+            return true;
+        }
+
+        this.player_bloodhound.get_bloodhound().search(input, suggestion_filterer);
+        if(candidate != null) {
+            this.most_recent_selection = candidate;
+            return true;
+        }
+
+        this.most_recent_selection = null;
+        return false;
+    };
 
     draft.prototype.get_element = function() {
         return this.screen_mgr.get_element();
@@ -76,7 +121,9 @@ define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', '
             this.set_dialogue_title(this.current_picker);
             $(this.dialogue.input_elem).typeahead('val', '');
             this.set_sidebar_title(this.current_picker);
-            this.sidebar.set_items(this.model.team_selections[this.current_picker]);
+            this.sidebar.set_items(this.model.team_selections[this.current_picker].map(function(item) {
+                return item.name;
+            }));
             this.set_rounds_counter(this.model.snake.get_current_round(), this.model.snake.get_rounds());
         }
     };
@@ -91,7 +138,9 @@ define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', '
             this.set_dialogue_title(this.current_picker);
             $(this.dialogue.input_elem).typeahead('val', '');
             this.set_sidebar_title(this.current_picker);
-            this.sidebar.set_items(this.model.team_selections[this.current_picker]);
+            this.sidebar.set_items(this.model.team_selections[this.current_picker].map(function(item) {
+                return item.name;
+            }));
             this.set_rounds_counter(this.model.snake.get_current_round(), this.model.snake.get_rounds());
         }
     };
@@ -117,7 +166,11 @@ define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', '
     };
 
     draft.prototype.submit_handler = function(player) {
-        this.model.push_selection(this.current_picker, player);
+        if(this.most_recent_selection.name != player) {
+            // We should NEVER get here.
+            console.error('Player name does not match most recently selected');
+        }
+        this.model.push_selection(this.current_picker, this.most_recent_selection);
         this.advance_snake();
     };
 
