@@ -13,9 +13,9 @@ define(function() {
         this.input_elem = document.createElement('input');
         this.input_elem.setAttribute('class', 'dialogue_input_default');
         this.button_elem = document.createElement('div');
-        this.button_elem.setAttribute('class', 'dialogue_button');
+        this.button_elem.setAttribute('class', 'dialogue_button button');
         this.back_elem = document.createElement('div');
-        this.back_elem.setAttribute('class', 'dialogue_back');
+        this.back_elem.setAttribute('class', 'dialogue_back underline');
 
         if(input_attrs.type) {
             if(input_attrs.type == 'text' && !input_attrs.class) {

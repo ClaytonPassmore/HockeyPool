@@ -21,7 +21,6 @@ html, body {
 }
 
 .dialogue {
-    background: #2A2C45;
     text-align: center;
     padding: 20px;
     position: relative;
@@ -30,12 +29,13 @@ html, body {
     transform: translate(-50%, -50%);
     display: inline-block;
     padding: 15px;
+    z-index: 1;
 }
 
 .dialogue_inner {
     border: 1px solid white;
     display: block;
-    padding: 10px;
+    padding: 10px 30px;
     box-sizing: border-box;
 }
 
@@ -53,6 +53,7 @@ html, body {
 
 .dialogue_input_number {
     width: 60px;
+    text-align: center;
 }
 
 .dialogue_input_default,
@@ -106,6 +107,36 @@ html, body {
     overflow: hidden;
     box-sizing: border-box;
     height: 100%;
+    position: relative;
+}
+
+.view_selections_button {
+    bottom: 100px;
+}
+
+.view_draft_button {
+    bottom: 50px;
+}
+
+.view_draft_button,
+.view_selections_button {
+    position: absolute;
+    left: 50%;
+    padding: 5px 10px;
+    transform: translateX(-50%);
+    border-radius: 10px;
+    border: 1px solid white;
+    cursor: pointer;
+}
+
+.button:hover {
+    color: #222222;
+    background: white;
+    border-color: #222222;
+}
+
+.underline:hover {
+    text-decoration: underline;
 }
 
 .sidebar {
@@ -119,7 +150,6 @@ html, body {
 .outer_sidebar {
     height: 100%;
     padding: 15px;
-    background: #2A2C45;
     box-sizing: border-box;
 }
 

@@ -86,8 +86,13 @@ function(
     })
     fetch_players.fetch();
 
+    var draft_selections = [];
+    var set_draft_picks = function(picks) {
+        draft_selections = picks;
+    };
     var draft = new Draft(draft_model, player_bloodhound, team_bloodhound);
     draft.add_forward_listener(button_handler);
+    draft.add_forward_listener(draft_selections);
     draft.add_back_listener(back_handler);
     draft_screen.appendChild(draft.get_element());
 

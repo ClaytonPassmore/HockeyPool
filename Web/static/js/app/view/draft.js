@@ -1,5 +1,12 @@
-define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', 'app/view/dialogue', 'jquery', 'typeahead'],
-    function(ScreenMgr, Sidebar, DraftContainer, Dialogue, $, typeahead) {
+define(
+['app/view/screen_mgr',
+ 'app/view/sidebar',
+ 'app/view/draft_container',
+ 'app/view/dialogue',
+ 'jquery',
+ 'typeahead'
+],
+function(ScreenMgr, Sidebar, DraftContainer, Dialogue, $, typeahead) {
 
     // TODO:
     // Queue
@@ -21,6 +28,12 @@ define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', '
         this.draft_container = new DraftContainer();
         this.rounds_counter = document.createElement('div');
         this.rounds_counter.setAttribute('class', 'rounds_counter');
+        var screen_switcher  = document.createElement('div');
+        screen_switcher.setAttribute('class', 'view_selections_button button');
+        screen_switcher.innerText = 'View Current Selections';
+        screen_switcher.addEventListener('click', function() {
+            this.screen_mgr.next();
+        }.bind(this));
 
         this.dialogue = new Dialogue(
             undefined,
@@ -34,6 +47,7 @@ define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', '
         this.draft_screen.appendChild(this.draft_container.get_element());
         this.draft_container.get_element().appendChild(this.dialogue.get_element());
         this.draft_container.get_element().appendChild(this.rounds_counter);
+        this.draft_container.get_element().appendChild(screen_switcher);
 
         $(this.dialogue.input_elem).typeahead({
             hint: true,
@@ -70,6 +84,13 @@ define(['app/view/screen_mgr', 'app/view/sidebar', 'app/view/draft_container', '
         );
 
         this.picks_screen = this.screen_mgr.add_screen();
+        var screen_switcher  = document.createElement('div');
+        screen_switcher.setAttribute('class', 'view_draft_button button');
+        screen_switcher.innerText = 'Return to the Draft';
+        screen_switcher.addEventListener('click', function() {
+            this.screen_mgr.next();
+        }.bind(this));
+        this.picks_screen.appendChild(screen_switcher);
         return this;
     };
 
