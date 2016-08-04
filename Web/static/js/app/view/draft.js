@@ -92,6 +92,9 @@ function(ScreenMgr, Sidebar, DraftContainer, Dialogue, $, typeahead) {
         }.bind(this));
         this.picks_container = document.createElement('div');
         this.picks_container.setAttribute('class', 'picks_container');
+        this.picks_container.addEventListener('mousewheel', function(e) {
+            this.picks_container.scrollLeft += e.deltaY;
+        }.bind(this));
 
         this.picks_screen.appendChild(screen_switcher);
         this.picks_screen.appendChild(this.picks_container);
