@@ -115,6 +115,7 @@ html, body {
     height: 100%;
     position: relative;
     padding-bottom: 130px;
+    padding: 10px 10px 130px 10px;
     overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
