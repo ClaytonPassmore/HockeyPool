@@ -84,14 +84,33 @@ function(ScreenMgr, Sidebar, DraftContainer, Dialogue, $, typeahead) {
         );
 
         this.picks_screen = this.screen_mgr.add_screen();
-        var screen_switcher  = document.createElement('div');
+        var screen_switcher = document.createElement('div');
         screen_switcher.setAttribute('class', 'view_draft_button button');
         screen_switcher.innerText = 'Return to the Draft';
         screen_switcher.addEventListener('click', function() {
             this.screen_mgr.next();
         }.bind(this));
+        this.picks_container = document.createElement('div');
+        this.picks_container.setAttribute('class', 'picks_container');
+
         this.picks_screen.appendChild(screen_switcher);
+        this.picks_screen.appendChild(this.picks_container);
         return this;
+    };
+
+    draft.prototype.set_teams = function(teams) {
+        if(this.team_lists) {
+            for(key in this.team_lists) {
+                var elem = this.team_lists[key];
+                elem.get_element().parentNode.removeChild(elem.get_element());
+            }
+        }
+        this.team_lists = {};
+        for(idx in teams) {
+            var sidebar = new Sidebar(teams[idx], 'inline_block');
+            this.team_lists[teams[idx]] = sidebar;
+            this.picks_container.appendChild(sidebar.get_element());
+        }
     };
 
     draft.prototype.input_validator = function(input) {
@@ -192,6 +211,8 @@ function(ScreenMgr, Sidebar, DraftContainer, Dialogue, $, typeahead) {
             console.error('Player name does not match most recently selected');
         }
         this.model.push_selection(this.current_picker, this.most_recent_selection);
+        this.team_lists[this.current_picker].set_items(
+            this.model.team_selections[this.current_picker].map(function(value) { return value.name; }));
 
         // TODO: Use a better way to distinguish which bloodhound it came from
         if(this.most_recent_selection.short) {
@@ -214,6 +235,8 @@ function(ScreenMgr, Sidebar, DraftContainer, Dialogue, $, typeahead) {
             }
         }
         this.go_back_snake();
+        this.team_lists[this.current_picker].set_items(
+            this.model.team_selections[this.current_picker].map(function(value) { return value.name; }));
     };
 
     draft.prototype.add_forward_listener = function(listener) {

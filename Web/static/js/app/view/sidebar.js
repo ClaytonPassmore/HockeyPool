@@ -1,9 +1,10 @@
 define(function() {
-    var sidebar = function(title) {
+    var sidebar = function(title, class_string) {
         title = title || '';
+        class_string = class_string || 'float_left';
 
         this.elem = document.createElement("div");
-        this.elem.setAttribute('class', 'sidebar');
+        this.elem.setAttribute('class', 'sidebar ' + class_string);
 
         this.outer_elem = document.createElement("div");
         this.outer_elem.setAttribute('class', 'outer_sidebar');
