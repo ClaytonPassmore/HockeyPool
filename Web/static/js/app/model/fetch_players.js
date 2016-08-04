@@ -20,6 +20,7 @@ define(function() {
             this.load_event(this.response);
         } else {
             console.error('Failed to load player data');
+            alert('Unable to load NHL data. Please reload the page to try again.');
         }
     };
 

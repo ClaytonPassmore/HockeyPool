@@ -10,8 +10,6 @@ function(ScreenMgr, Sidebar, DraftContainer, Dialogue, $, typeahead) {
 
     // TODO:
     // Queue
-    // Screen for other teams' picks
-    // Buttons to switch between screens
 
     var draft = function(draft_model, player_bloodhound, team_bloodhound) {
         this.model = draft_model;
