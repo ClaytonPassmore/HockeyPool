@@ -236,8 +236,10 @@ function(ScreenMgr, Sidebar, DraftContainer, Dialogue, $, typeahead) {
             }
         }
         this.go_back_snake();
-        this.team_lists[this.current_picker].set_items(
-            this.model.team_selections[this.current_picker].map(function(value) { return value.name; }));
+        if(this.current_picker) {
+            this.team_lists[this.current_picker].set_items(
+                this.model.team_selections[this.current_picker].map(function(value) { return value.name; }));
+        }
     };
 
     draft.prototype.add_forward_listener = function(listener) {
