@@ -18,7 +18,7 @@ define(function() {
         this.list_container_elem = document.createElement("div");
         this.list_container_elem.setAttribute('class', 'sidebar_list_container')
 
-        this.list_elem = document.createElement('ul');
+        this.list_elem = document.createElement('ol');
         this.list_elem.setAttribute('class', 'sidebar_list');
 
         this.list_container_elem.appendChild(this.list_elem);
