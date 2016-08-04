@@ -6,15 +6,6 @@ import MySQLdb
 
 from config import DBConfig
 
-db = MySQLdb.connect(
-    host=DBConfig.HOST,
-    user=DBConfig.USER,
-    passwd=DBConfig.PASSWORD,
-    db=DBConfig.DB)
-
-if not db:
-    print('Unable to connect to DB. Abort.')
-    exit(-1)
 
 app = flask.Flask(__name__)
 
@@ -25,7 +16,12 @@ def draft():
 @app.route('/rest')
 def rest():
     try:
-        global db
+        db = MySQLdb.connect(
+            host=DBConfig.HOST,
+            user=DBConfig.USER,
+            passwd=DBConfig.PASSWORD,
+            db=DBConfig.DB)
+
         player_query = "SELECT id, playerName, playerTeamsPlayedFor FROM players"
         team_query = "SELECT id, teamFullName, teamAbbrev FROM teams"
 
@@ -56,6 +52,8 @@ def rest():
             dic[u'name'] = players[i][1].decode('utf-8')
             dic[u'team'] = players[i][2].decode('utf-8')
             players[i] = dic
+
+        db.close()
 
         # Encode the result in unicode
         result = json.dumps({u'teams': teams, u'players': players}, ensure_ascii=False)
