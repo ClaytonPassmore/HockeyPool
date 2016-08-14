@@ -92,9 +92,8 @@ function(
     };
     var draft = new Draft(draft_model, player_bloodhound, team_bloodhound);
     draft.add_forward_listener(button_handler);
-    draft.add_forward_listener(draft_selections);
+    draft.add_forward_listener(set_draft_picks);
     draft.add_back_listener(back_handler);
-    participants.add_submit_listener(draft.set_teams.bind(draft));
     draft_screen.appendChild(draft.get_element());
 
     // TODO

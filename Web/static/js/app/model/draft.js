@@ -9,7 +9,7 @@ define(['app/model/snake'], function(SnakeModel) {
 
         if(teams && rounds) {
             this.snake = new SnakeModel(teams, rounds);
-            this.call_listeners();
+            this.call_listeners(teams);
         }
         return this;
     };
@@ -23,7 +23,7 @@ define(['app/model/snake'], function(SnakeModel) {
         if(this.rounds && teams) {
             this.snake = new SnakeModel(teams, this.rounds);
         }
-        this.call_listeners();
+        this.call_listeners(teams);
     };
 
     draft.prototype.set_rounds = function(rounds) {
@@ -31,16 +31,16 @@ define(['app/model/snake'], function(SnakeModel) {
         if(this.teams && rounds) {
             this.snake = new SnakeModel(this.teams, rounds);
         }
-        this.call_listeners();
+        this.call_listeners(this.teams);
     };
 
     draft.prototype.add_listener = function(listener) {
         this.listeners.push(listener);
     };
 
-    draft.prototype.call_listeners = function() {
+    draft.prototype.call_listeners = function(teams) {
         for(idx in this.listeners) {
-            this.listeners[idx]();
+            this.listeners[idx](teams);
         }
     };
 

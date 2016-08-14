@@ -83,6 +83,28 @@ html, body {
     width: 100px;
 }
 
+.queue_container {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 1px solid white;
+    white-space: nowrap;
+    max-width: 90%;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.queue_item {
+    display: inline-block;
+    border: 1px solid white;
+    padding: 5px 10px;
+}
+
+.active_queue_item {
+    background-color: orange;
+}
+
 .title_span {
     background: #2D306F;
     text-align: center;

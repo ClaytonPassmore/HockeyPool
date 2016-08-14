@@ -3,21 +3,18 @@ define(
  'app/view/sidebar',
  'app/view/draft_container',
  'app/view/dialogue',
+ 'app/view/queue',
  'jquery',
  'typeahead'
 ],
-function(ScreenMgr, Sidebar, DraftContainer, Dialogue, $, typeahead) {
-
-    // TODO:
-    // Queue
-
+function(ScreenMgr, Sidebar, DraftContainer, Dialogue, Queue, $, typeahead) {
     var draft = function(draft_model, player_bloodhound, team_bloodhound) {
         this.model = draft_model;
         this.player_bloodhound = player_bloodhound;
         this.team_bloodhound = team_bloodhound;
         this.forward_listeners = [];
         this.back_listeners = [];
-        this.model.add_listener(this.advance_snake.bind(this));
+        this.model.add_listener(this.set_teams.bind(this));
         this.most_recent_selection = null;
 
         this.screen_mgr = new ScreenMgr();
@@ -33,6 +30,7 @@ function(ScreenMgr, Sidebar, DraftContainer, Dialogue, $, typeahead) {
             this.screen_mgr.next();
         }.bind(this));
 
+        this.queue = new Queue();
         this.dialogue = new Dialogue(
             undefined,
             {id: 'typeahead', class: 'dialogue_typeahead_input'},
@@ -43,6 +41,7 @@ function(ScreenMgr, Sidebar, DraftContainer, Dialogue, $, typeahead) {
 
         this.draft_screen.appendChild(this.sidebar.get_element());
         this.draft_screen.appendChild(this.draft_container.get_element());
+        this.draft_container.get_element().appendChild(this.queue.get_element());
         this.draft_container.get_element().appendChild(this.dialogue.get_element());
         this.draft_container.get_element().appendChild(this.rounds_counter);
         this.draft_container.get_element().appendChild(screen_switcher);
@@ -112,6 +111,11 @@ function(ScreenMgr, Sidebar, DraftContainer, Dialogue, $, typeahead) {
             this.team_lists[teams[idx]] = sidebar;
             this.picks_container.appendChild(sidebar.get_element());
         }
+
+        if(this.model.snake) {
+            this.queue.set_items(this.model.snake.get_order());
+        }
+        this.advance_snake();
     };
 
     draft.prototype.input_validator = function(input) {
@@ -154,6 +158,9 @@ function(ScreenMgr, Sidebar, DraftContainer, Dialogue, $, typeahead) {
 
     draft.prototype.advance_snake = function() {
         if(this.model.snake) {
+            if(this.current_picker) {
+                this.queue.forward();
+            }
             this.current_picker = this.model.snake.next();
             if(!this.current_picker) {
                 this.forward_event();
@@ -172,6 +179,7 @@ function(ScreenMgr, Sidebar, DraftContainer, Dialogue, $, typeahead) {
     draft.prototype.go_back_snake = function() {
         if(this.model.snake) {
             this.current_picker = this.model.snake.previous();
+            this.queue.back();
             if(!this.current_picker) {
                 this.back_event();
                 return;
