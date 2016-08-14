@@ -5,6 +5,7 @@ define(
  'app/view/dialogue',
  'app/view/participants',
  'app/view/draft',
+ 'app/view/draft_confirm',
  'app/model/draft',
  'app/model/fetch_players',
  'app/model/bloodhound',
@@ -17,6 +18,7 @@ function(
     Dialogue,
     Participants,
     Draft,
+    DraftConfirm,
     DraftModel,
     FetchPlayers,
     Bloodhound,
@@ -86,17 +88,18 @@ function(
     })
     fetch_players.fetch();
 
-    var draft_selections = [];
-    var set_draft_picks = function(picks) {
-        draft_selections = picks;
-    };
     var draft = new Draft(draft_model, player_bloodhound, team_bloodhound);
     draft.add_forward_listener(button_handler);
-    draft.add_forward_listener(set_draft_picks);
     draft.add_back_listener(back_handler);
     draft_screen.appendChild(draft.get_element());
 
-    // TODO
     var confirm_screen = screen_mgr.add_screen();
+    draft_confirm = new DraftConfirm();
+    draft.add_forward_listener(function(picks) {
+        draft_confirm.set_selections(picks);
+    });
+    confirm_screen.appendChild(draft_confirm.get_element());
+
+    // TODO
     var finish_screen = screen_mgr.add_screen();
 });

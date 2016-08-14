@@ -125,6 +125,11 @@ html, body {
     background: #222222;
 }
 
+.confirm_container {
+    height: 100%;
+    position: relative;
+}
+
 .draft_container {
     overflow: hidden;
     box-sizing: border-box;

@@ -260,7 +260,7 @@ function(ScreenMgr, Sidebar, DraftContainer, Dialogue, Queue, $, typeahead) {
 
     draft.prototype.forward_event = function() {
         for(idx in this.forward_listeners) {
-            this.forward_listeners[idx]();
+            this.forward_listeners[idx](this.model.team_selections);
         }
     };
 
