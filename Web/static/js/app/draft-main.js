@@ -95,8 +95,13 @@ function(
 
     var confirm_screen = screen_mgr.add_screen();
     draft_confirm = new DraftConfirm();
+    draft_confirm.add_forward_listener(button_handler);
+    draft_confirm.add_back_listener(back_handler);
     draft.add_forward_listener(function(picks) {
         draft_confirm.set_selections(picks);
+    });
+    draft_confirm.add_back_listener(function() {
+        draft.back_handler();
     });
     confirm_screen.appendChild(draft_confirm.get_element());
 

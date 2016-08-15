@@ -11,7 +11,30 @@ define(['app/view/sidebar'], function(Sidebar) {
             this.picks_container.scrollLeft += e.deltaY;
         }.bind(this));
 
+        var container = document.createElement('div');
+        container.setAttribute('class', 'question_container');
+        var question = document.createElement('div');
+        question.setAttribute('class', 'inline_question');
+        question.innerText = 'Ready to move on?'
+        var yes_button = document.createElement('div');
+        yes_button.setAttribute('class', 'answer_button button');
+        yes_button.innerText = 'Looks good';
+        var no_button = document.createElement('div');
+        no_button.setAttribute('class', 'answer_button button');
+        no_button.innerText = 'Go back';
+
+        yes_button.addEventListener('click', function() {
+            this.forward_event();
+        }.bind(this));
+        no_button.addEventListener('click', function() {
+            this.back_event();
+        }.bind(this));
+
+        container.appendChild(question);
+        container.appendChild(yes_button);
+        container.appendChild(no_button);
         this.elem.appendChild(this.picks_container);
+        this.elem.appendChild(container);
         this.set_selections(selections || {});
         return this;
     };
