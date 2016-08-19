@@ -6,7 +6,9 @@ define(
  'app/view/participants',
  'app/view/draft',
  'app/view/draft_confirm',
+ 'app/view/draft_submit',
  'app/model/draft',
+ 'app/model/draft_submit',
  'app/model/fetch_players',
  'app/model/bloodhound',
  'bloodhound'
@@ -19,7 +21,9 @@ function(
     Participants,
     Draft,
     DraftConfirm,
+    DraftSubmit,
     DraftModel,
+    DraftSubmitModel,
     FetchPlayers,
     Bloodhound,
     bloodhound
@@ -107,4 +111,10 @@ function(
 
     // TODO
     var finish_screen = screen_mgr.add_screen();
+    var draft_submit_model = new DraftSubmitModel();
+    var draft_submit = new DraftSubmit(draft_submit_model);
+    draft_confirm.add_forward_listener(function(picks) {
+        draft_submit_model.submit(picks);
+    });
+    finish_screen.appendChild(draft_submit.get_element());
 });
