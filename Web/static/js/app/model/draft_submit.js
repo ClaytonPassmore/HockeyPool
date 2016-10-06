@@ -16,6 +16,7 @@ define(function() {
     };
 
     draft_submit.prototype.submit = function(data) {
+        this.last_data = data;
         this.xml = new XMLHttpRequest();
         this.xml.onreadystatechange = this.callback.bind(this);
         this.xml.timeout = 5000;
@@ -30,6 +31,12 @@ define(function() {
             this.call_listeners(true);
         }
     };
+
+    draft_submit.prototype.retry = function() {
+        if(this.last_data) {
+            this.submit(this.last_data);
+        }
+    }
 
     return draft_submit;
 });

@@ -12,10 +12,18 @@ define(['app/view/title_span'], function(TitleSpan) {
 
     draft_submit.prototype.submit_handler = function(error) {
         if(error) {
-            this.title_span.set_title('We failed to submit your data. Retry?');
+            this.show_retry();
         } else {
-            this.title_span.set_title('The draft was submitted successfully!');
+            this.show_finished();
         }
+    };
+
+    draft_submit.prototype.show_retry = function() {
+        this.title_span.set_title('We failed to submit your data. Retry?');
+    };
+
+    draft_submit.prototype.show_finished = function() {
+        this.title_span.set_title('The draft was submitted successfully!');
     };
 
     return draft_submit;
