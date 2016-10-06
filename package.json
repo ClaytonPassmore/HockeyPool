@@ -1,0 +1,26 @@
+{
+  "name": "hockeypooljs",
+  "version": "1.0.0",
+  "description": "HockeyPool frontend",
+  "main": "Javascript/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ClaytonPassmore/HockeyPool.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ClaytonPassmore/HockeyPool/issues"
+  },
+  "homepage": "https://github.com/ClaytonPassmore/HockeyPool#readme",
+  "devDependencies": {
+    "babel-polyfill": "^6.16.0",
+    "babel-preset-latest": "^6.16.0",
+    "babelify": "^7.3.0",
+    "grunt": "^1.0.1",
+    "grunt-browserify": "^5.0.0"
+  }
+}
