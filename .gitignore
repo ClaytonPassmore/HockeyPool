@@ -64,3 +64,6 @@ target/
 
 # ctags
 tags
+
+# node modules
+node_modules/
