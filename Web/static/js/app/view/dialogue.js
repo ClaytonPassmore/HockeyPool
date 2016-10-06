@@ -1,23 +1,27 @@
 define(function() {
-    var dialogue = function(title, input_attrs) {
+    var dialogue = function(title, input_attrs, validator) {
+        title = title || '';
+        input_attrs = input_attrs || {};
+        this.validator = validator || null;
+
         this.elem = document.createElement('div');
         this.elem.setAttribute('class', 'dialogue');
-        this.inner_elem = document.createElement('class', 'dialogue');
+        this.inner_elem = document.createElement('div');
         this.inner_elem.setAttribute('class', 'dialogue_inner');
         this.title_elem = document.createElement('div');
         this.title_elem.setAttribute('class', 'dialogue_title');
         this.input_elem = document.createElement('input');
         this.input_elem.setAttribute('class', 'dialogue_input_default');
         this.button_elem = document.createElement('div');
-        this.button_elem.setAttribute('class', 'dialogue_button');
+        this.button_elem.setAttribute('class', 'dialogue_button button');
         this.back_elem = document.createElement('div');
-        this.back_elem.setAttribute('class', 'dialogue_back');
+        this.back_elem.setAttribute('class', 'dialogue_back underline');
 
         if(input_attrs.type) {
-            if(input_attrs.type == 'text') {
+            if(input_attrs.type == 'text' && !input_attrs.class) {
                 this.input_elem.setAttribute('class', 'dialogue_input_text');
             }
-            else if(input_attrs.type == 'number') {
+            else if(input_attrs.type == 'number' && !input_attrs.class) {
                 this.input_elem.setAttribute('class', 'dialogue_input_number');
             }
         }
@@ -67,6 +71,9 @@ define(function() {
 
     dialogue.prototype.button_event = function() {
         this.input_elem.focus();
+        if (this.validator != null && !this.validator(this.input_elem.value)) {
+            return;
+        }
         for(idx in this.button_listeners) {
             this.button_listeners[idx](this.input_elem.value);
         }
@@ -93,7 +100,7 @@ define(function() {
         } else {
             this.input_elem.style = 'display: none;';
         }
-    }
+    };
 
     return dialogue;
 });

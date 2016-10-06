@@ -1,11 +1,11 @@
 DROP DATABASE IF EXISTS HockeyPool;
-
 CREATE DATABASE IF NOT EXISTS HockeyPool;
--- Switch to the newly created database
 USE HockeyPool;
 
 CREATE TABLE IF NOT EXISTS teams
 (
+    id INTEGER NOT NULL PRIMARY KEY,
+
     -- Team Logistics
     teamFullName VARCHAR(255) NOT NULL,
     teamAbbrev VARCHAR(255) NOT NULL,
@@ -32,13 +32,13 @@ CREATE TABLE IF NOT EXISTS teams
     pkPctg FLOAT NOT NULL DEFAULT 0,
     shotsAgainstPerGame FLOAT NOT NULL DEFAULT 0,
     goalsForPerGame FLOAT NOT NULL DEFAULT 0,
-    shotsForPerGame FLOAT NOT NULL DEFAULT 0,
-
-    PRIMARY KEY (teamFullName)
+    shotsForPerGame FLOAT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS players
 (
+    id INTEGER NOT NULL PRIMARY KEY,
+
     -- Player Logistics
     seasonId INTEGER NOT NULL DEFAULT 0,
     playerTeamsPlayedFor VARCHAR(255) NOT NULL,
@@ -67,13 +67,13 @@ CREATE TABLE IF NOT EXISTS players
     shootingPctg FLOAT NOT NULL DEFAULT 0,
     penaltyMinutes INTEGER NOT NULL DEFAULT 0,
     gamesPlayed INTEGER NOT NULL DEFAULT 0,
-    shots INTEGER NOT NULL DEFAULT 0,
-
-    PRIMARY KEY (playerName, playerTeamsPlayedFor)
+    shots INTEGER NOT NULL DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS goalies
 (
+    id INTEGER NOT NULL PRIMARY KEY,
+
     -- Player Logistics
     seasonId INTEGER NOT NULL DEFAULT 0,
     playerTeamsPlayedFor VARCHAR(255) NOT NULL,
@@ -100,7 +100,5 @@ CREATE TABLE IF NOT EXISTS goalies
     saves INTEGER NOT NULL DEFAULT 0,
     shutouts INTEGER NOT NULL DEFAULT 0,
     goalsAgainstAverage FLOAT NOT NULL DEFAULT 0,
-    goalsAgainst INTEGER NOT NULL DEFAULT 0,
-
-    PRIMARY KEY (playerName, playerTeamsPlayedFor)
+    goalsAgainst INTEGER NOT NULL DEFAULT 0
 );

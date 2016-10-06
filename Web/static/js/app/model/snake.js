@@ -1,81 +1,65 @@
 define(function() {
-    var snake = {
-        init: function() {
-            this.entries = [];
-            this.popped = [];
-        },
+    var snake = function(items, rounds) {
+        this.index = -1;
+        this.rounds = rounds;
+        this.items = items;
 
-        // Add an entry
-        add_entry: function(entry) {
-            for(var i = 0; i < this.entries.length; i++) {
-                if(entry == this.entries[i]) {
-                    return -1;
-                }
-            }
-            // Add the entry to the front of the list
-            this.entries.splice(0, 0, entry);
-            return 0;
-        },
-
-        // Remove an entry
-        remove_entry: function(entry) {
-            for(var i = 0; i < this.entries.length; i++) {
-                if(entry == this.entries[i]) {
-                    this.entries.splice(i, 1);
-                    return 0;
-                }
-            }
-            return -1;
-        },
-
-        // Swap an entry
-        swap_entry: function(current, newer) {
-            for(var i = 0; i < this.entries.length; i++) {
-                if(current == this.entries[i]) {
-                    this.entries.splice(i, 1, newer);
-                    return 0;
-                }
-            }
-            return -1;
-        },
-
-        // Clear the snake
-        clear: function() {
-            this.entries = [];
-            this.popped = [];
-        },
-
-        // Go to the next turn
-        next: function() {
-            var candidate = 0;
-            if(this.entries.length == 0) {
-                this.entries = this.popped;
-                this.popped = [];
-            }
-            candidate = this.entries.pop();
-            this.popped.push(candidate);
-            return candidate;
-        },
-
-        // Go to the previous turn
-        previous: function() {
-            var candidate = 0;
-            if(this.popped.length == 0) {
-                this.popped = this.entries;
-                this.entries = [];
-            }
-            candidate = this.popped.pop();
-            this.entries.push(candidate);
-            return candidate;
-        },
-
-        // Get the number of turns left in the round
-        num_turns: function() {
-            return this.entries.length;
+        var rev_items = [];
+        for(var i = 0; i < items.length; i++) {
+            rev_items.push(items[i]);
         }
+        rev_items.reverse();
+
+        this.order = [];
+        for(var i = 0; i < rounds; i++) {
+            if(i % 2) {
+                this.order = this.order.concat(rev_items);
+            } else {
+                this.order = this.order.concat(items);
+            }
+        }
+
+        return this;
     };
 
-    // Initialize and return.
-    snake.init();
+    snake.prototype.get_order = function() {
+        return this.order;
+    };
+
+    snake.prototype.get_index = function() {
+        return this.index;
+    };
+
+    snake.prototype.get_rounds = function() {
+        return this.rounds;
+    };
+
+    snake.prototype.get_current_round = function() {
+        var idx = (this.index < 0 ? 0 : this.index);
+        return Math.floor(idx / this.items.length) + 1;
+    };
+
+    snake.prototype.get_total = function() {
+        return this.order.length;
+    };
+
+    snake.prototype.next = function() {
+        this.index++;
+        if(this.index >= this.order.length) {
+            this.index = this.order.length;
+            return undefined;
+        }
+        return this.order[this.index];
+    };
+
+    snake.prototype.previous = function() {
+        this.index--;
+        if(this.index < 0) {
+            this.index = -1;
+            return undefined;
+        }
+        return this.order[this.index];
+    };
+
     return snake;
 });

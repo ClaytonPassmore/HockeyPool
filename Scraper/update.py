@@ -1,10 +1,10 @@
+import logging
 import time
 
 import MySQLdb
 
 from config import DBConfig
-from StatsDigester import StatsDigester as SD
-from StatsDigester import REGULAR_SEASON_ID, PLAYOFFS_ID
+from StatsDigester import REGULAR_SEASON_ID, PLAYOFFS_ID, StatsDigester as SD
 
 
 """
@@ -21,55 +21,43 @@ def update_table(sql_con, URL, table_name):
     try:
         js = SD.fetchJSON(URL)
     except:
+        logging.exception('Could not fetch JSON')
         return -1
 
-    if not js or len(js['data']) == 0:
+    if not js or not js.get('data'):
+        logging.error('JSON contained no data')
         return -1
 
     if table_name == 'teams':
-        key_to_omit = 'teamId'
-    else: # Omit for players and goalies
-        key_to_omit = 'playerId'
-    del(js['data'][0][key_to_omit]) # This omits the ID key
+        id_key = 'teamId'
+    else:  # Players and goalies
+        id_key = 'playerId'
 
-    # Determine the column names
-    # Note if NHL changes their column names, we're SOL.
+    # If NHL changes their column names, we're SOL.
     keys = js['data'][0].keys()
-    columns = ','.join(keys)
+    columns = list(set(keys) - set([id_key]))
 
-    # Determine the primary key for the table
-    if table_name == 'teams':
-        pkey = [u'teamFullName']
-    elif table_name == 'players':
-        pkey = [u'playerName', u'playerTeamsPlayedFor']
-    elif table_name == 'goalies':
-        pkey = [u'playerName', u'playerTeamsPlayedFor']
-    else:
-        return -1
-
-    query = u'UPDATE %s SET %s WHERE %s="%s"'
+    query = u'UPDATE {} SET {} WHERE id={}'
     query_list = []
 
     for item in js['data']:
         string = u''
-        for k in range(len(keys)):
+        for k in range(len(columns)):
             # Have to put this in quotes
-            if type(item[keys[k]]) is unicode:
-                addition = u'"' + item[keys[k]] + u'"'
+            if type(item[columns[k]]) is unicode:
+                addition = u'"' + item[columns[k]] + u'"'
             else:
-                addition = str(item[keys[k]])
-            string += keys[k] + '=' + addition
-            if k < (len(keys) - 1):
+                addition = str(item[columns[k]])
+            string += columns[k] + '=' + addition
+            if k < (len(columns) - 1):
                 string += ','
         # Add the query to the list of queries.
-        query_list.append(query % (table_name, string, pkey[0], item[pkey[0]]))
-        if len(pkey) > 1:
-            for k in range(1, len(pkey)):
-                query_list[-1] = query_list[-1] + (u' and %s="%s"' % (pkey[k], item[pkey[k]]))
+        query_list.append(query.format(table_name, string, item[id_key]))
 
     # Get a cursor from the database connection
     cursor = sql_con.cursor()
     if not cursor:
+        logging.error('Could not create DB cursor')
         return -1
 
     # Run the transaction
@@ -80,6 +68,7 @@ def update_table(sql_con, URL, table_name):
         except:
             sql_con.rollback()
             cursor.close()
+            logging.exception('Could not update a row')
             return -1
 
     # Commit the changes
@@ -88,6 +77,7 @@ def update_table(sql_con, URL, table_name):
     except:
         sql_con.rollback()
         cursor.close()
+        logging.exception('Could not perform the update transaction')
         return -1
 
     # Close the cursor
@@ -102,7 +92,7 @@ def main():
     fd = open('season.cfg', 'r')
 
     if not fd:
-        print('Could not open config file. Abort.')
+        logging.error('Could not open config file')
         return -1
 
     # Read the data from the config file.
@@ -117,7 +107,7 @@ def main():
         if season_type != REGULAR_SEASON_ID and season_type != PLAYOFFS_ID:
             raise Exception('Invalid season type')
     except:
-        print('Invalid contents in config file. Abort.')
+        logging.error('Invalid contents in config file')
         return -1
 
     # Create the URLs to retrieve data from.
@@ -133,7 +123,7 @@ def main():
         db=DBConfig.DB)
 
     if not db:
-        print('Unable to connect to DB. Abort.')
+        logging.error('Unable to connect to DB')
         return -1
 
     db.autocommit(False)
@@ -142,7 +132,7 @@ def main():
     if (update_table(db, teamURL, 'teams') or
             update_table(db, playerURL, 'players') or
             update_table(db, goalieURL, 'goalies')):
-        print('Unable to update database. Abort.')
+        logging.error('Unable to update database')
         return -1
 
     # Close the connection to the database.
@@ -151,7 +141,7 @@ def main():
     # Write out the time that we updated at.
     fd = open('last_updated.cfg', 'w')
     if not fd:
-        print('Could not write the update time')
+        logging.warning('Could not write the update time')
         return -1
     fd.write(str(time.time()) + '\n')
     fd.close()

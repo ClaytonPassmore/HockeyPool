@@ -1,5 +1,33 @@
-define(['app/view/entry', 'app/view/screen_mgr', 'app/view/title_span', 'app/view/dialogue', 'app/view/participants'],
-    function(Entry, ScreenMgr, TitleSpan, Dialogue, Participants) {
+define(
+['app/view/entry',
+ 'app/view/screen_mgr',
+ 'app/view/title_span',
+ 'app/view/dialogue',
+ 'app/view/participants',
+ 'app/view/draft',
+ 'app/view/draft_confirm',
+ 'app/view/draft_submit',
+ 'app/model/draft',
+ 'app/model/draft_submit',
+ 'app/model/fetch_players',
+ 'app/model/bloodhound',
+ 'bloodhound'
+],
+function(
+    Entry,
+    ScreenMgr,
+    TitleSpan,
+    Dialogue,
+    Participants,
+    Draft,
+    DraftConfirm,
+    DraftSubmit,
+    DraftModel,
+    DraftSubmitModel,
+    FetchPlayers,
+    Bloodhound,
+    bloodhound
+) {
 
     var entry = new Entry();
     var screen_mgr = new ScreenMgr();
@@ -44,8 +72,49 @@ define(['app/view/entry', 'app/view/screen_mgr', 'app/view/title_span', 'app/vie
     num_rounds_dialogue.add_button_listener(button_handler);
     rounds_screen.appendChild(num_rounds_dialogue.get_element());
 
-    // TODO
+    var draft_model = new DraftModel();
+    participants.add_submit_listener(function(participants) {
+        draft_model.set_teams(participants);
+    });
+    num_rounds_dialogue.add_button_listener(function(rounds) {
+        draft_model.set_rounds(rounds);
+    });
+
+
     var draft_screen = screen_mgr.add_screen();
+    var player_bloodhound = new Bloodhound([], bloodhound.tokenizers.obj.whitespace('name'));
+    var team_bloodhound = new Bloodhound([], bloodhound.tokenizers.obj.whitespace('name'));
+
+    var fetch_players = new FetchPlayers('http://localhost:5000/rest');
+    fetch_players.add_listener(function(players, teams) {
+        player_bloodhound.set_data(players);
+        team_bloodhound.set_data(teams);
+    })
+    fetch_players.fetch();
+
+    var draft = new Draft(draft_model, player_bloodhound, team_bloodhound);
+    draft.add_forward_listener(button_handler);
+    draft.add_back_listener(back_handler);
+    draft_screen.appendChild(draft.get_element());
+
     var confirm_screen = screen_mgr.add_screen();
+    draft_confirm = new DraftConfirm();
+    draft_confirm.add_forward_listener(button_handler);
+    draft_confirm.add_back_listener(back_handler);
+    draft.add_forward_listener(function(picks) {
+        draft_confirm.set_selections(picks);
+    });
+    draft_confirm.add_back_listener(function() {
+        draft.back_handler();
+    });
+    confirm_screen.appendChild(draft_confirm.get_element());
+
+    // TODO
     var finish_screen = screen_mgr.add_screen();
+    var draft_submit_model = new DraftSubmitModel();
+    var draft_submit = new DraftSubmit(draft_submit_model);
+    draft_confirm.add_forward_listener(function(picks) {
+        draft_submit_model.submit(picks);
+    });
+    finish_screen.appendChild(draft_submit.get_element());
 });

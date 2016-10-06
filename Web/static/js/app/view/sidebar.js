@@ -1,7 +1,10 @@
 define(function() {
-    var sidebar = function(title) {
+    var sidebar = function(title, class_string) {
+        title = title || '';
+        class_string = class_string || 'float_left';
+
         this.elem = document.createElement("div");
-        this.elem.setAttribute('class', 'sidebar');
+        this.elem.setAttribute('class', 'sidebar ' + class_string);
 
         this.outer_elem = document.createElement("div");
         this.outer_elem.setAttribute('class', 'outer_sidebar');
@@ -15,7 +18,7 @@ define(function() {
         this.list_container_elem = document.createElement("div");
         this.list_container_elem.setAttribute('class', 'sidebar_list_container')
 
-        this.list_elem = document.createElement('ul');
+        this.list_elem = document.createElement('ol');
         this.list_elem.setAttribute('class', 'sidebar_list');
 
         this.list_container_elem.appendChild(this.list_elem);
