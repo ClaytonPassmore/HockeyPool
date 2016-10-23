@@ -52,7 +52,7 @@ class Draft extends EventObject.EventObject {
         this.snake.set_rounds(rounds);
     }
 
-    make_selection(selector, player) {
+    make_selection(selector, id) {
         if (!this.snake.is_ready()) {
             throw Error('Teams and rounds must be set before making selections');
         }
@@ -63,7 +63,9 @@ class Draft extends EventObject.EventObject {
             throw Error('Not ' + selector + '\'s turn');
         }
 
+        var player = this.bloodhound.get_by_id(id);
         this.selection_record.push_selection(selector, player);
+        this.bloodhound.remove(id);
         this.current_selector = null;
         this.snake.next();
     }

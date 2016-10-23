@@ -7,6 +7,7 @@ class bloodhound {
         var query_tokenizer = Bloodhound.tokenizers.whitespace;
 
         this.bloodhound = new Bloodhound({
+            identify: function(item) { return item.id; },
             datumTokenizer: datum_tokenizer,
             queryTokenizer: query_tokenizer
         });
@@ -22,10 +23,14 @@ class bloodhound {
         return this.bloodhound;
     }
 
-    remove(item) {
+    get_by_id(id) {
+        return this.bloodhound.get([id]);
+    }
+
+    remove(id) {
         var data = this.bloodhound.local;
         for(idx in data) {
-            if(item == data[idx]) {
+            if(id == data[idx].id) {
                 data.splice(idx, 1);
                 break;
             }
