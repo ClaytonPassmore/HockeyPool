@@ -30,5 +30,7 @@ CREATE TABLE IF NOT EXISTS players
     shootingPctg FLOAT NOT NULL DEFAULT 0,
     penaltyMinutes INTEGER NOT NULL DEFAULT 0,
     gamesPlayed INTEGER NOT NULL DEFAULT 0,
-    shots INTEGER NOT NULL DEFAULT 0
+    shots INTEGER NOT NULL DEFAULT 0,
+
+    FOREIGN KEY (playerTeamsPlayedFor) REFERENCES teams(teamAbbrev)
 );

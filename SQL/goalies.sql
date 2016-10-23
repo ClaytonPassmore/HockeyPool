@@ -28,5 +28,7 @@ CREATE TABLE IF NOT EXISTS goalies
     saves INTEGER NOT NULL DEFAULT 0,
     shutouts INTEGER NOT NULL DEFAULT 0,
     goalsAgainstAverage FLOAT NOT NULL DEFAULT 0,
-    goalsAgainst INTEGER NOT NULL DEFAULT 0
+    goalsAgainst INTEGER NOT NULL DEFAULT 0,
+
+    FOREIGN KEY (playerTeamsPlayedFor) REFERENCES teams(teamAbbrev)
 );

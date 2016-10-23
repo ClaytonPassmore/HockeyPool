@@ -3,8 +3,8 @@ CREATE TABLE IF NOT EXISTS teams
     id INTEGER NOT NULL PRIMARY KEY,
 
     -- Team Logistics
-    teamFullName VARCHAR(255) NOT NULL,
-    teamAbbrev VARCHAR(255) NOT NULL,
+    teamFullName VARCHAR(255) NOT NULL UNIQUE,
+    teamAbbrev VARCHAR(255) NOT NULL UNIQUE,
     seasonId INTEGER NOT NULL DEFAULT 0,
 
     -- Wins/Losses, etc.

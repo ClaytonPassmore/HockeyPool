@@ -5,7 +5,7 @@ from argparse import ArgumentParser, ArgumentError
 import MySQLdb
 
 from config import DBConfig
-from stats_digester import fetch_summary, REGULAR_SEASON_ID
+from stats_digester import fetch_summary, REGULAR_SEASON_ID, PLAYOFFS_ID
 
 logging.basicConfig(level=logging.INFO)
 ERROR = 1
@@ -68,7 +68,7 @@ def update(db, season_start):
 
 
 def update_table(connector, season, sum_type, table, id_map):
-    data = fetch_summary(season, sum_type, REGULAR_SEASON_ID)
+    data = fetch_summary(season, sum_type, PLAYOFFS_ID)
     if not data:
         raise ValueError('Could not retrieve JSON')
 
