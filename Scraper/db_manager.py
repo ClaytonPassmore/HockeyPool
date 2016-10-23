@@ -127,7 +127,8 @@ def initialize(db, season_start):
         populate(db, season, 'player', DBConfig.PLAYERS_TABLE, {
             'id': 'playerId',
             'playerName': 'playerName',
-            'playerTeamsPlayedFor': 'playerTeamsPlayedFor'
+            'playerTeamsPlayedFor': 'playerTeamsPlayedFor',
+            'playerPositionCode': 'playerPositionCode'
         })
     except:
         logging.error('Player populate failed')
@@ -142,7 +143,8 @@ def initialize(db, season_start):
         populate(db, season, 'goalie', DBConfig.GOALIES_TABLE, {
             'id': 'playerId',
             'playerName': 'playerName',
-            'playerTeamsPlayedFor': 'playerTeamsPlayedFor'
+            'playerTeamsPlayedFor': 'playerTeamsPlayedFor',
+            'playerPositionCode': 'playerPositionCode'
         })
     except:
         logging.error('Goalie populate failed')
@@ -174,8 +176,10 @@ def populate(connector, season, sum_type, table, col_map):
 
             if isinstance(val, (str, unicode)):
                 val = '"' + val.encode('utf-8') + '"'
+            else:
+                val = str(val)
             row_args.append(val)
-        rows.append('({},{},{})'.format(*row_args))
+        rows.append('(' + ','.join(row_args) + ')')
     query += ','.join(rows)
 
     sql_transaction(connector, query)
