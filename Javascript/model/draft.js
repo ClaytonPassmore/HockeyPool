@@ -3,16 +3,21 @@ const Snake = require('./snake');
 const request = require('../utils/request').request;
 
 const SUBMIT_URL = 'http://localhost:5000/draft/submit';
+const PLAYERS_URL = 'http://localhost:5000/draft/players';
 const READY_EVENT = 'ready';
 const RESET_EVENT = 'reset';
 const COMPLETE_EVENT = 'complete';
+const SUBMIT_SUCCESS_EVENT = 'submit_success';
+const SUBMIT_FAILURE_EVENT = 'submit_failure';
+const LOAD_FAILURE_EVENT = 'load_failure';
 
 
 class Draft extends EventObject.EventObject {
-    constructor(selection_record, snake) {
+    constructor(selection_record, snake, bloodhound) {
         super();
         this.selection_record = selection_record;
         this.snake = snake;
+        this.bloodhound = bloodhound;
         this.current_selector = null;
 
         // Event Listeners
@@ -34,6 +39,8 @@ class Draft extends EventObject.EventObject {
             self.selection_record.reset();
             self._emit(RESET_EVENT);
         });
+
+        this.get_options_async();
     }
 
     set_teams(teams) {
@@ -80,8 +87,22 @@ class Draft extends EventObject.EventObject {
             selections[teams[idx]] = this.selection_record.get_selections(teams[idx]).selections;
         }
 
+        var self = this;
         var selection_data = JSON.stringify(selections);
-        return request(SUBMIT_URL, selection_data);
+        request(SUBMIT_URL, selection_data).then(function() {
+            self._emit(SUBMIT_SUCCESS_EVENT);
+        }).catch(function(err) {
+            self._emit(SUBMIT_FAILURE_EVENT);
+        });
+    }
+
+    get_options_async() {
+        var self = this;
+        request(PLAYERS_URL).then(function(values) {
+            self.bloodhound.set_data(JSON.parse(values));
+        }).catch(function(err) {
+            self._emit(LOAD_FAILURE_EVENT, [err])
+        });
     }
 }
 
@@ -90,3 +111,6 @@ exports.Draft = Draft;
 exports.READY_EVENT = READY_EVENT;
 exports.RESET_EVENT = RESET_EVENT;
 exports.COMPLETE_EVENT = COMPLETE_EVENT;
+exports.SUBMIT_SUCCESS_EVENT = SUBMIT_SUCCESS_EVENT;
+exports.SUBMIT_FAILURE_EVENT = SUBMIT_FAILURE_EVENT;
+exports.LOAD_FAILURE_EVENT = LOAD_FAILURE_EVENT;
