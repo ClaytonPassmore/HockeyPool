@@ -1,7 +1,5 @@
 export PYTHONPATH := $(shell pwd)
-SEASON1 = 2015
-SEASON2 = 2016
-PLAYOFFS = 1
+SEASON = 2015
 
 depends:
 	pip install --user -r requirements.txt
@@ -9,18 +7,15 @@ depends:
 run:
 	python Web/server.py
 
-init: initdb populatedb updatedb
+init: initdb updatedb
 
 updatedb:
-	python Scraper/update.py
-
-populatedb:
-	python Scraper/populate.py $(SEASON1) $(SEASON2) $(PLAYOFFS)
+	python Scraper/db_manager.py $(SEASON) update
 
 initdb:
-	python SQL/create.py
+	python Scraper/db_manager.py $(SEASON) initialize
 
 ubuntu:
 	sudo apt-get install mysql-server python-pip build-essential python-dev libmysqlclient-dev python-mysqldb
 
-.PHONY: depends run init updatedb populatedb initdb ubuntu
+.PHONY: depends run init updatedb initdb ubuntu
