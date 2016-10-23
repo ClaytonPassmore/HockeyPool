@@ -2,7 +2,7 @@ const EventObject = require('../utils/event_object');
 const Snake = require('./snake');
 const request = require('../utils/request').request;
 
-const SUBMIT_URL = 'http://localhost:5000/submit';
+const SUBMIT_URL = 'http://localhost:5000/draft/submit';
 const READY_EVENT = 'ready';
 const RESET_EVENT = 'reset';
 const COMPLETE_EVENT = 'complete';
