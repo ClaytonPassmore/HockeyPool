@@ -3,6 +3,7 @@ const EventObject = require('./event_object');
 
 class ViewObject extends EventObject.EventObject {
     constructor() {
+        super();
         this.element = null;
     }
 
@@ -20,9 +21,6 @@ class ScreenManager extends ViewObject {
         this.screens = [];
         this.current = null;
 
-        this.add_screen();
-        this.set_screen_by_index(0);
-
         window.addEventListener('resize', this.set_size.bind(this));
     }
 
@@ -30,10 +28,10 @@ class ScreenManager extends ViewObject {
         return this.current;
     }
 
-    add_screen = function() {
+    add_screen() {
         var screen = document.createElement('div');
         screen.setAttribute('class', 'screen');
-        screen.style.display = 'none';
+        screen.style.left = '100%';
         this.screens.push(screen);
         this.set_size();
         this.element.appendChild(screen);
@@ -42,20 +40,20 @@ class ScreenManager extends ViewObject {
 
     next() {
         var index = this.screens.indexOf(this.current);
-        if(index < 0) {
-            index = this.screens.length - 1;
+        if(index < 0 || index === (this.screens.length - 1)) {
+            return;
         }
-        index = (index + 1) % this.screens.length;
-        this.set_screen_by_index(index);
+        index++;
+        this.set_screen_by_index(index, true);
     }
 
     previous() {
         var index = this.screens.indexOf(this.current);
-        if(index < 0) {
-            index = this.screens.length - 1;
+        if(index <= 0) {
+            return;
         }
-        index = (index + this.screens.length - 1) % this.screens.length;
-        this.set_screen_by_index(index);
+        index--;
+        this.set_screen_by_index(index, false);
     }
 
     remove_screen(screen) {
@@ -77,17 +75,22 @@ class ScreenManager extends ViewObject {
         return this.set_screen_by_index(index);
     }
 
-    set_screen_by_index(index) {
+    set_screen_by_index(index, forward_transition) {
         if(index == this.screens.indexOf(this.current)) {
             return;
         }
 
         if(this.current) {
-            this.current.style.display = 'none';
+            if (forward_transition === false) {
+                this.current.style.left = '100%';
+            }
+            else if (forward_transition === true) {
+                this.current.style.left = '-100%';
+            }
         }
 
         this.current = this.screens[index];
-        this.current.style.display = 'block';
+        this.current.style.left = '0';
         return 0;
     }
 
