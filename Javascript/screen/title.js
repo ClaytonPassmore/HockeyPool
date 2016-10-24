@@ -3,9 +3,13 @@ const Title = require('../widget/title');
 
 
 class TitleScreen extends Screen.Screen {
-    constructor(screen_elem) {
-        super(screen_elem);
-        this.title = new Title.Title('Welcome to the draft.');
+    constructor(title) {
+        super();
+        this.title = new Title.Title(title);
+        var title_elem = this.title.get_element();
+        title_elem.style.position = 'relative';
+        title_elem.style.top = '50%';
+        title_elem.style.transform = 'translateY(-50%)';
 
         var self = this;
         this.element.style.cursor = 'pointer';
@@ -13,7 +17,7 @@ class TitleScreen extends Screen.Screen {
             self.next();
         });
 
-        this.element.appendChild(this.title.get_element());
+        this.element.appendChild(title_elem);
     }
 }
 

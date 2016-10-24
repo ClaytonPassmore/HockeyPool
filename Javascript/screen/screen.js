@@ -2,9 +2,10 @@ const ViewUtils = require('../utils/view_utils');
 
 
 class Screen extends ViewUtils.ViewObject {
-    constructor(screen_elem) {
+    constructor() {
         super();
-        this.element = screen_elem;
+        this.element = document.createElement('div');
+        this.element.setAttribute('class', 'full');
     }
 
     next() {

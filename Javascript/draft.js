@@ -6,6 +6,8 @@ const Bloodhound = require('./model/bloodhound');
 const ViewUtils = require('./utils/view_utils');
 const TitleScreen = require('./screen/title');
 
+const TITLE_TEXT = 'Welcome to the draft.';
+
 
 window.addEventListener('load', function() {
     /* Create models */
@@ -17,14 +19,14 @@ window.addEventListener('load', function() {
     /* Create screens for each step of the draft */
     var screen_mgr = new ViewUtils.ScreenManager();
     var screens = {};
-    screens.title = screen_mgr.add_screen(TitleScreen.TitleScreen);
+    screens.title = screen_mgr.add_screen(new TitleScreen.TitleScreen(TITLE_TEXT));
     // TODO: Make actual screen classes for these guys
-    screens.rounds = screen_mgr.add_screen(TitleScreen.TitleScreen);
-    screens.participants = screen_mgr.add_screen(TitleScreen.TitleScreen);
-    screens.selections = screen_mgr.add_screen(TitleScreen.TitleScreen);
-    screens.review = screen_mgr.add_screen(TitleScreen.TitleScreen);
-    screens.submit = screen_mgr.add_screen(TitleScreen.TitleScreen);
-    screen_mgr.set_screen(screens.title.get_element());
+    screens.rounds = screen_mgr.add_screen(new TitleScreen.TitleScreen(TITLE_TEXT));
+    screens.participants = screen_mgr.add_screen(new TitleScreen.TitleScreen(TITLE_TEXT));
+    screens.selections = screen_mgr.add_screen(new TitleScreen.TitleScreen(TITLE_TEXT));
+    screens.review = screen_mgr.add_screen(new TitleScreen.TitleScreen(TITLE_TEXT));
+    screens.submit = screen_mgr.add_screen(new TitleScreen.TitleScreen(TITLE_TEXT));
+    screen_mgr.set_screen(screens.title);
 
     /* Wiring */
     var entry = document.getElementById('entry');

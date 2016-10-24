@@ -30,16 +30,13 @@ class ScreenManager extends ViewObject {
         return this.current;
     }
 
-    add_screen(screen_class) {
+    add_screen(screen_instance) {
         var screen = document.createElement('div');
         screen.setAttribute('class', 'screen');
         screen.style.left = '100%';
         this.screens.push(screen);
         this.set_size();
-        this.element.appendChild(screen);
 
-        // Instantiate class and register listeners.
-        var screen_instance = new screen_class(screen);
         var self = this;
         screen_instance.addEventListener(SCREEN_NEXT_EVENT, function() {
             self.next();
@@ -47,7 +44,10 @@ class ScreenManager extends ViewObject {
         screen_instance.addEventListener(SCREEN_PREVIOUS_EVENT, function() {
             self.previous();
         });
-        return screen_instance;
+
+        screen.appendChild(screen_instance.get_element());
+        this.element.appendChild(screen);
+        return screen;
     }
 
     next() {
