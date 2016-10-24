@@ -18,14 +18,13 @@ window.addEventListener('load', function() {
     var screen_mgr = new ViewUtils.ScreenManager();
     var screens = {};
     screens.title = screen_mgr.add_screen(TitleScreen.TitleScreen);
+    // TODO: Make actual screen classes for these guys
     screens.rounds = screen_mgr.add_screen(TitleScreen.TitleScreen);
     screens.participants = screen_mgr.add_screen(TitleScreen.TitleScreen);
     screens.selections = screen_mgr.add_screen(TitleScreen.TitleScreen);
     screens.review = screen_mgr.add_screen(TitleScreen.TitleScreen);
     screens.submit = screen_mgr.add_screen(TitleScreen.TitleScreen);
     screen_mgr.set_screen(screens.title.get_element());
-
-    /* Create views */
 
     /* Wiring */
     var entry = document.getElementById('entry');
