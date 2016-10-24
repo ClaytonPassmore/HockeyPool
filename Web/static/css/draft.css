@@ -1,6 +1,13 @@
 body {
     margin: 0;
     overflow: hidden;
+    background-color: #2A2A2A;
+    color: #E0E0E0;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .screen {
@@ -8,4 +15,13 @@ body {
     top: 0;
     left: 0;
     transition: left 1s;
+}
+
+.title-widget {
+    width: 100%;
+    text-align: center;
+    font-size: 3em;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
 }

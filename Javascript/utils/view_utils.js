@@ -1,4 +1,6 @@
 const EventObject = require('./event_object');
+const SCREEN_NEXT_EVENT = 'screen_next';
+const SCREEN_PREVIOUS_EVENT = 'screen_previous';
 
 
 class ViewObject extends EventObject.EventObject {
@@ -28,14 +30,24 @@ class ScreenManager extends ViewObject {
         return this.current;
     }
 
-    add_screen() {
+    add_screen(screen_class) {
         var screen = document.createElement('div');
         screen.setAttribute('class', 'screen');
         screen.style.left = '100%';
         this.screens.push(screen);
         this.set_size();
         this.element.appendChild(screen);
-        return screen;
+
+        // Instantiate class and register listeners.
+        var screen_instance = new screen_class(screen);
+        var self = this;
+        screen_instance.addEventListener(SCREEN_NEXT_EVENT, function() {
+            self.next();
+        });
+        screen_instance.addEventListener(SCREEN_PREVIOUS_EVENT, function() {
+            self.previous();
+        });
+        return screen_instance;
     }
 
     next() {
@@ -117,3 +129,5 @@ class ScreenManager extends ViewObject {
 
 exports.ViewObject = ViewObject;
 exports.ScreenManager = ScreenManager;
+exports.SCREEN_NEXT_EVENT = SCREEN_NEXT_EVENT;
+exports.SCREEN_PREVIOUS_EVENT = SCREEN_PREVIOUS_EVENT;
