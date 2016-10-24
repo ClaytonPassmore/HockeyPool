@@ -64,6 +64,9 @@ class Draft extends EventObject.EventObject {
         }
 
         var player = this.bloodhound.get_by_id(id);
+        if (!player) {
+            throw Error('Invalid id: ' + id);
+        }
         this.selection_record.push_selection(selector, player);
         this.bloodhound.remove(id);
         this.current_selector = null;
