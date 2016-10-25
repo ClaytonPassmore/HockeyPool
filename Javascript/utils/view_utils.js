@@ -19,9 +19,19 @@ class ScreenManager extends ViewObject {
     constructor() {
         super();
         this.element = document.createElement('div');
-        this.element.setAttribute('class', 'screen_container');
+        this.element.setAttribute('class', 'screen-container');
         this.screens = [];
+        this.screen_instances = [];
         this.current = null;
+        this.current_instance = null;
+
+        var self = this;
+        this.next_invoker = function() {
+            self.next();
+        }.bind(this);
+        this.previous_invoker = function() {
+            self.previous();
+        }.bind(this);
 
         window.addEventListener('resize', this.set_size.bind(this));
     }
@@ -35,15 +45,8 @@ class ScreenManager extends ViewObject {
         screen.setAttribute('class', 'screen');
         screen.style.left = '100%';
         this.screens.push(screen);
+        this.screen_instances.push(screen_instance);
         this.set_size();
-
-        var self = this;
-        screen_instance.addEventListener(SCREEN_NEXT_EVENT, function() {
-            self.next();
-        });
-        screen_instance.addEventListener(SCREEN_PREVIOUS_EVENT, function() {
-            self.previous();
-        });
 
         screen.appendChild(screen_instance.get_element());
         this.element.appendChild(screen);
@@ -79,6 +82,7 @@ class ScreenManager extends ViewObject {
         }
         this.element.removeChild(this.screens[index]);
         this.screens.splice(index, 1);
+        this.screen_instances.splice(index, 1);
         return 0;
     }
 
@@ -99,11 +103,22 @@ class ScreenManager extends ViewObject {
             else if (forward_transition === true) {
                 this.current.style.left = '-100%';
             }
+            else {
+                throw Error('Must be transition direction');
+            }
+        }
+
+        if (this.current_instance) {
+            this.current_instance.removeEventListener(SCREEN_NEXT_EVENT, this.next_invoker);
+            this.current_instance.removeEventListener(SCREEN_PREVIOUS_EVENT, this.previous_invoker);
         }
 
         this.current = this.screens[index];
         this.current.style.left = '0';
-        return 0;
+        this.current_instance = this.screen_instances[index];
+        this.current_instance.addEventListener(SCREEN_NEXT_EVENT, this.next_invoker);
+        this.current_instance.addEventListener(SCREEN_PREVIOUS_EVENT, this.previous_invoker);
+        this.current_instance.focus();
     }
 
     clear_all() {

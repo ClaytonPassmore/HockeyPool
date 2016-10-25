@@ -27,25 +27,29 @@ class TitleScreen extends Screen.Screen {
 class RoundsScreen extends Screen.Screen {
     constructor(draft_model) {
         super();
-        var dialogue = new Dialogue.NumberDialogue('How many rounds will there be?', 0, null, 10);
-        var dialogue_elem = dialogue.get_element();
+        this.dialogue = new Dialogue.NumberDialogue('How many rounds will there be?', 0, null, 10);
+        var dialogue_elem = this.dialogue.get_element();
         dialogue_elem.style.position = 'relative';
         dialogue_elem.style.top = '50%';
         dialogue_elem.style.left = '50%';
         dialogue_elem.style.transform = 'translate(-50%, -50%)';
 
         var self = this;
-        dialogue.addEventListener(Dialogue.SUBMIT_EVENT, function(val) {
+        this.dialogue.addEventListener(Dialogue.SUBMIT_EVENT, function(val) {
             if (0 <= val && val <= 10) {
                 draft_model.set_rounds(val);
             }
             self.next();
         });
-        dialogue.addEventListener(Dialogue.BACK_EVENT, function() {
+        this.dialogue.addEventListener(Dialogue.BACK_EVENT, function() {
             self.previous();
         });
 
         this.element.appendChild(dialogue_elem);
+    }
+
+    focus() {
+        this.dialogue.picker.focus();
     }
 }
 

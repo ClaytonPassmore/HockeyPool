@@ -15,6 +15,10 @@ class Screen extends ViewUtils.ViewObject {
     previous() {
         this._emit(ViewUtils.SCREEN_PREVIOUS_EVENT);
     }
+
+    focus() {
+        /* Called by a screen manager when the screen gains focus. */
+    }
 }
 
 

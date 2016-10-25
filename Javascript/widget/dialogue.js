@@ -14,21 +14,21 @@ class NumberDialogue extends ViewUtils.ViewObject {
         var title_widget = new Title.Title(title);
         title_widget.get_element().style.fontSize = '2em';
 
-        var picker = document.createElement('input');
-        picker.setAttribute('type', 'number');
-        picker.style.fontSize = '4em';
-        picker.style.textAlign = 'right';
-        picker.style.width = '100px';
-        picker.style.margin = '20px auto';
-        picker.style.display = 'block';
+        this.picker = document.createElement('input');
+        this.picker.setAttribute('type', 'number');
+        this.picker.style.fontSize = '4em';
+        this.picker.style.textAlign = 'right';
+        this.picker.style.width = '100px';
+        this.picker.style.margin = '20px auto';
+        this.picker.style.display = 'block';
         if (min != null) {
-            picker.setAttribute('min', min);
+            this.picker.setAttribute('min', min);
         }
         if (max != null) {
-            picker.setAttribute('max', max);
+            this.picker.setAttribute('max', max);
         }
         if (default_val != null) {
-            picker.setAttribute('value', default_val);
+            this.picker.setAttribute('value', default_val);
         }
 
         var button_container = document.createElement('div');
@@ -50,7 +50,7 @@ class NumberDialogue extends ViewUtils.ViewObject {
 
         var self = this;
         submit.addEventListener('click', function() {
-            self._emit(SUBMIT_EVENT, [picker.value]);
+            self._emit(SUBMIT_EVENT, [self.picker.value]);
         });
         back.addEventListener('click', function() {
             self._emit(BACK_EVENT);
@@ -59,7 +59,7 @@ class NumberDialogue extends ViewUtils.ViewObject {
         button_container.appendChild(back_elem);
         button_container.appendChild(submit_elem);
         this.element.appendChild(title_widget.get_element());
-        this.element.appendChild(picker);
+        this.element.appendChild(self.picker);
         this.element.appendChild(button_container);
     }
 }
