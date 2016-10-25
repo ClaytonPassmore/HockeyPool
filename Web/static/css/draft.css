@@ -25,5 +25,29 @@ body {
 .title-widget {
     width: 100%;
     text-align: center;
-    font-size: 3em;
+}
+
+.dialogue-widget {
+    max-width: 500px;
+    border: 3px solid;
+    padding: 20px;
+}
+
+.button-widget {
+    cursor: pointer;
+    padding: 2px 3px 2px 3px;
+    display: inline-block;
+}
+
+.box-button-widget {
+    border: 1px solid
+}
+
+.box-button-widget:hover {
+    background-color: #E0E0E0;
+    color: #2A2A2A;
+}
+
+.link-button-widget:hover {
+    text-decoration: underline;
 }
