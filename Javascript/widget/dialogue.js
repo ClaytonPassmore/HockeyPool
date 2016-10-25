@@ -55,6 +55,11 @@ class NumberDialogue extends ViewUtils.ViewObject {
         back.addEventListener('click', function() {
             self._emit(BACK_EVENT);
         });
+        this.picker.addEventListener('keydown', function(e) {
+            if (e.keyCode === 13) {
+                self._emit(SUBMIT_EVENT, [self.picker.value]);
+            }
+        });
 
         button_container.appendChild(back_elem);
         button_container.appendChild(submit_elem);
