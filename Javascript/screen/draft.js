@@ -39,6 +39,7 @@ class RoundsScreen extends Screen.Screen {
             if (0 <= val && val <= 10) {
                 draft_model.set_rounds(val);
             }
+            self.notify('Selected ' + val + ' rounds.');
             self.next();
         });
         this.dialogue.addEventListener(Dialogue.BACK_EVENT, function() {

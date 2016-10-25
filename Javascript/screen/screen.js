@@ -1,4 +1,5 @@
 const ViewUtils = require('../utils/view_utils');
+const Notify = require('../utils/notify');
 
 
 class Screen extends ViewUtils.ViewObject {
@@ -14,6 +15,10 @@ class Screen extends ViewUtils.ViewObject {
 
     previous() {
         this._emit(ViewUtils.SCREEN_PREVIOUS_EVENT);
+    }
+
+    notify(message) {
+        Notify.notify(message);
     }
 
     focus() {
