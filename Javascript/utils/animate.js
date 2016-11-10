@@ -22,10 +22,6 @@ function animate(element, property, eventual, duration) {
 
         function work() {
             var val = parseFloat(element.style[property].match(val_re)) + delta;
-            console.log(eventual_val);
-            console.log(initial_val);
-            console.log(val);
-            console.log('----');
             if ((eventual_val > initial_val && val >= eventual_val) ||
                 (eventual_val < initial_val && val <= eventual_val))
             {
