@@ -22,7 +22,6 @@ window.addEventListener('load', function() {
     document.getElementsByTagName('body')[0].appendChild(notification_manager.get_element());
 
     /* Create screens for each step of the draft */
-    console.log(notification_manager);
     var screen_mgr = new ViewUtils.ScreenManager(notification_manager);
     var screens = {};
     screens.title = screen_mgr.add_screen(new DraftScreens.TitleScreen(TITLE_TEXT));
