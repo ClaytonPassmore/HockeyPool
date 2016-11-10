@@ -1,6 +1,7 @@
 const EventObject = require('./event_object');
 const SCREEN_NEXT_EVENT = 'screen_next';
 const SCREEN_PREVIOUS_EVENT = 'screen_previous';
+const NOTIFY_EVENT = 'notify';
 
 
 class ViewObject extends EventObject.EventObject {
@@ -16,8 +17,9 @@ class ViewObject extends EventObject.EventObject {
 
 
 class ScreenManager extends ViewObject {
-    constructor() {
+    constructor(notification_manager) {
         super();
+        this.notification_manager = notification_manager || null;
         this.element = document.createElement('div');
         this.element.setAttribute('class', 'screen-container');
         this.screens = [];
@@ -31,6 +33,9 @@ class ScreenManager extends ViewObject {
         }.bind(this);
         this.previous_invoker = function() {
             self.previous();
+        }.bind(this);
+        this.notifier = function(message) {
+            self.notify(message)
         }.bind(this);
 
         window.addEventListener('resize', this.set_size.bind(this));
@@ -111,6 +116,7 @@ class ScreenManager extends ViewObject {
         if (this.current_instance) {
             this.current_instance.removeEventListener(SCREEN_NEXT_EVENT, this.next_invoker);
             this.current_instance.removeEventListener(SCREEN_PREVIOUS_EVENT, this.previous_invoker);
+            this.current_instance.removeEventListener(NOTIFY_EVENT, this.notifier);
         }
 
         this.current = this.screens[index];
@@ -118,11 +124,12 @@ class ScreenManager extends ViewObject {
         this.current_instance = this.screen_instances[index];
         this.current_instance.addEventListener(SCREEN_NEXT_EVENT, this.next_invoker);
         this.current_instance.addEventListener(SCREEN_PREVIOUS_EVENT, this.previous_invoker);
+        this.current_instance.addEventListener(NOTIFY_EVENT, this.notifier);
         this.current_instance.focus();
     }
 
     clear_all() {
-        for(var i = 0; i < this.screens.length; i++) {
+        for (var i = 0; i < this.screens.length; i++) {
             this.screens[i].setAttribute('style', '');
             while(this.screens[i].firstChild) {
                 this.screens[i].removeChild(this.screens[i].firstChild);
@@ -134,9 +141,15 @@ class ScreenManager extends ViewObject {
     set_size() {
         var height = window.innerHeight.toString() + 'px';
         var width = window.innerWidth.toString() + 'px';
-        for(var i = 0; i < this.screens.length; i++) {
+        for (var i = 0; i < this.screens.length; i++) {
             this.screens[i].style.height = height;
             this.screens[i].style.width = width;
+        }
+    }
+
+    notify(message) {
+        if (this.notification_manager != null) {
+            this.notification_manager.notify(message);
         }
     }
 }
@@ -146,3 +159,4 @@ exports.ViewObject = ViewObject;
 exports.ScreenManager = ScreenManager;
 exports.SCREEN_NEXT_EVENT = SCREEN_NEXT_EVENT;
 exports.SCREEN_PREVIOUS_EVENT = SCREEN_PREVIOUS_EVENT;
+exports.NOTIFY_EVENT = NOTIFY_EVENT;

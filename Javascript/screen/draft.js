@@ -36,7 +36,7 @@ class RoundsScreen extends Screen.Screen {
 
         var self = this;
         this.dialogue.addEventListener(Dialogue.SUBMIT_EVENT, function(val) {
-            if (0 <= val && val <= 10) {
+            if (0 <= val) {
                 draft_model.set_rounds(val);
             }
             self.notify('Selected ' + val + ' rounds.');
@@ -54,5 +54,41 @@ class RoundsScreen extends Screen.Screen {
     }
 }
 
+
+class ParticipantsScreen extends Screen.Screen {
+    constructor(draft_model) {
+        super();
+        this.draft_model = draft_model;
+        this.number_dialogue = new Dialogue.NumberDialogue('How many participants will there be?', 1, null, 5);
+        var dialogue_elem = this.number_dialogue.get_element();
+        dialogue_elem.style.position = 'relative';
+        dialogue_elem.style.top = '50%';
+        dialogue_elem.style.left = '50%';
+        dialogue_elem.style.transform = 'translate(-50%, -50%)';
+        this.number_of_participants = null;
+
+        var self = this;
+        this.number_dialogue.addEventListener(Dialogue.SUBMIT_EVENT, function(val) {
+            if (1 <= val) {
+                self.number_of_participants = val;
+            }
+            self.notify('Selected ' + val + ' participants.');
+            // XXX
+        });
+        this.number_dialogue.addEventListener(Dialogue.BACK_EVENT, function() {
+            self.previous();
+        });
+
+        this.active_dialogue_input = this.number_dialogue.picker;
+        this.element.appendChild(dialogue_elem);
+    }
+
+    focus() {
+        this.active_dialogue_input.focus();
+    }
+}
+
+
 exports.TitleScreen = TitleScreen;
 exports.RoundsScreen = RoundsScreen;
+exports.ParticipantsScreen = ParticipantsScreen;
