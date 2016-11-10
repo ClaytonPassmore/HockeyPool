@@ -53,6 +53,7 @@ body {
 }
 
 .notification-manager-widget {
+    z-index: 100;
     position: absolute;
     top: 0;
     right: 0;
