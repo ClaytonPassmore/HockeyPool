@@ -16,6 +16,6 @@ initdb:
 	python Scraper/db_manager.py $(SEASON) initialize
 
 ubuntu:
-	sudo apt-get install mysql-server python-pip build-essential python-dev libmysqlclient-dev python-mysqldb
+	sudo apt-get install mysql-server python-pip build-essential python-dev libmysqlclient-dev npm nodejs
 
 .PHONY: depends run init updatedb initdb ubuntu
