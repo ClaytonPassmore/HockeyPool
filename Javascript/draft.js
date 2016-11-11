@@ -19,7 +19,6 @@ window.addEventListener('load', function() {
 
     /* Create notification manager */
     var notification_manager = new Notify.NotificationManager();
-    document.getElementsByTagName('body')[0].appendChild(notification_manager.get_element());
 
     /* Create screens for each step of the draft */
     var screen_mgr = new ViewUtils.ScreenManager(notification_manager);
@@ -35,5 +34,6 @@ window.addEventListener('load', function() {
 
     /* Wiring */
     var entry = document.getElementById('entry');
+    entry.appendChild(notification_manager.get_element());
     entry.appendChild(screen_mgr.get_element());
 });
