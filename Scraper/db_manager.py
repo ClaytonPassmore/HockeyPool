@@ -103,6 +103,10 @@ def initialize(db, season_start):
     sql_transaction(db, 'CREATE DATABASE IF NOT EXISTS {}'.format(database))
     db.select_db(database)
 
+    logging.info('Constructing draft table')
+    with open(DBConfig.DRAFTS_CREATE, 'r') as fd:
+        sql_transaction(db, fd.read())
+
     logging.info('Constructing team table')
     with open(DBConfig.TEAMS_CREATE, 'r') as fd:
         sql_transaction(db, fd.read())

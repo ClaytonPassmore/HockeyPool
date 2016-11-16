@@ -3,6 +3,7 @@ class DBConfig:
     PASSWORD = 'root'
     HOST = 'localhost'
 
+    DRAFTS_CREATE = 'SQL/drafts.sql'
     TEAMS_CREATE = 'SQL/teams.sql'
     PLAYERS_CREATE = 'SQL/players.sql'
     GOALIES_CREATE = 'SQL/goalies.sql'

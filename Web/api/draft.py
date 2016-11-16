@@ -13,6 +13,22 @@ class DraftHandler(BaseHandler):
         return self.render_template('draft.html');
 
 
+class DraftNameHandler(BaseHandler):
+    def get(self):
+        try:
+            db = MySQLdb.connect(
+                host=DBConfig.HOST,
+                user=DBConfig.USER,
+                passwd=DBConfig.PASSWORD,
+                db=latest_season_db()
+            )
+            names = map(lambda x: x['name'], jsonify_query_results(db, 'SELECT name FROM drafts'))
+            return json.dumps({'names': names})
+        except:
+            logging.exception('Unable to fetch draft names')
+            self.abort(500)
+
+
 class DraftTeamHandler(BaseHandler):
     def get(self):
         try:
@@ -49,6 +65,7 @@ class DraftSubmitHandler(BaseHandler):
 
 routes = [
     ('/draft', DraftHandler),
+    ('/draft/names', DraftNameHandler),
     ('/draft/players', DraftTeamHandler),
     ('/draft/submit', DraftSubmitHandler)
 ]
