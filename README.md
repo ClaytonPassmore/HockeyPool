@@ -3,9 +3,9 @@
 ## Installation
 This section assumes your `pwd` is the top level of the project.
 
-Install system dependencies:
+Install system dependencies for debian and derivatives (other systems are not officially supported):
 ```bash
-make ubuntu
+make system
 ```
 
 Install python dependencies:

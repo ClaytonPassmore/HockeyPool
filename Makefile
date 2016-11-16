@@ -15,9 +15,9 @@ updatedb:
 initdb:
 	python Scraper/db_manager.py $(SEASON) initialize
 
-ubuntu:
+system:
 	wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.32.1/install.sh | bash
 	. $(HOME)/.nvm/nvm.sh && nvm install 6.9.1 && nvm use 6.9.1
 	sudo apt-get install mysql-server python-pip build-essential python-dev libmysqlclient-dev nodejs
 
-.PHONY: depends run init updatedb initdb ubuntu
+.PHONY: depends run init updatedb initdb system
