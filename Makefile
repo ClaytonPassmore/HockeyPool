@@ -1,23 +1,27 @@
 export PYTHONPATH := $(shell pwd)
 SEASON = 2015
+VENV = $(shell pwd)/venv
+VPY = $(VENV)/bin/python
 
 depends:
-	pip install --user -r requirements.txt
+	pip install -r requirements.txt --target venv/lib/python2.7/site-packages/ -q
 
 run:
-	python Web/server.py
+	$(VPY) Web/server.py
 
 init: initdb updatedb
 
 updatedb:
-	python Scraper/db_manager.py $(SEASON) update
+	$(VPY) Scraper/db_manager.py $(SEASON) update
 
 initdb:
-	python Scraper/db_manager.py $(SEASON) initialize
+	$(VPY) Scraper/db_manager.py $(SEASON) initialize
 
 system:
+	sudo apt-get install mysql-server python-pip build-essential python-dev libmysqlclient-dev nodejs
 	wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.32.1/install.sh | bash
 	. $(HOME)/.nvm/nvm.sh && nvm install 6.9.1 && nvm use 6.9.1
-	sudo apt-get install mysql-server python-pip build-essential python-dev libmysqlclient-dev nodejs
+	pip install --user virtualenv
+	python -m virtualenv $(VENV)
 
 .PHONY: depends run init updatedb initdb system
