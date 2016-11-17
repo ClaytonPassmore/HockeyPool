@@ -19,6 +19,7 @@ class Draft extends EventObject.EventObject {
         this.snake = snake;
         this.bloodhound = bloodhound;
         this.current_selector = null;
+        this.name = null;
 
         // Event Listeners
         var self = this;
@@ -50,6 +51,10 @@ class Draft extends EventObject.EventObject {
 
     set_rounds(rounds) {
         this.snake.set_rounds(rounds);
+    }
+
+    set_name(name) {
+        this.name = name;
     }
 
     make_selection(selector, id) {
@@ -92,8 +97,12 @@ class Draft extends EventObject.EventObject {
             selections[teams[idx]] = this.selection_record.get_selections(teams[idx]).selections;
         }
 
+        var selection_data = JSON.stringify({
+            'name': this.name,
+            'selections': selections
+        });
+
         var self = this;
-        var selection_data = JSON.stringify(selections);
         request(SUBMIT_URL, selection_data).then(function() {
             self._emit(SUBMIT_SUCCESS_EVENT);
         }).catch(function(err) {
