@@ -1,8 +1,37 @@
 # HockeyPool
 
 ## Installation
-Open up a terminal and run `make ubuntu`. Set up the root DB account with the password 'root'.
+This section assumes your `pwd` is the top level of the project.
 
-Run `make depends` to install the package dependencies.
+Install system dependencies for debian and derivatives (other systems are not officially supported):
+```bash
+make system
+```
 
-In order to initialize and populate the database, run `make init`.
+Install python dependencies:
+```bash
+make depends
+```
+
+Install node dependencies:
+```
+npm install
+```
+
+Initialize and update the database:
+```bash
+make init
+```
+
+## Development
+Once again, this section assumes your `pwd` is the top level of the project.
+
+To compile the ECMA Script:
+```
+npm run grunt
+```
+
+To run the web server:
+```bash
+make run
+```

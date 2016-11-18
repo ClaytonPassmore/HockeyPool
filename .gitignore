@@ -14,8 +14,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
 parts/
 sdist/
 var/
@@ -64,3 +62,10 @@ target/
 
 # ctags
 tags
+
+# node modules
+node_modules/
+Web/static/js/
+
+# virtual environment
+venv/

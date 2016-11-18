@@ -1,72 +1,20 @@
-import json
-import logging
+import glob
+import os
+from importlib import import_module
 
 import flask
-import MySQLdb
-
-from config import DBConfig
-
 
 app = flask.Flask(__name__)
 
-@app.route('/draft')
-def draft():
-    return flask.render_template('draft.html')
-
-@app.route('/rest')
-def rest():
-    try:
-        db = MySQLdb.connect(
-            host=DBConfig.HOST,
-            user=DBConfig.USER,
-            passwd=DBConfig.PASSWORD,
-            db=DBConfig.DB)
-
-        player_query = "SELECT id, playerName, playerTeamsPlayedFor FROM players"
-        team_query = "SELECT id, teamFullName, teamAbbrev FROM teams"
-
-        # Query for teams
-        db.query(team_query)
-        teams_result = db.store_result()
-        teams = list(teams_result.fetch_row(maxrows=0))
-        teams = map(list, teams)
-
-        # Decode unicode strings
-        for i in range(len(teams)):
-            dic = {}
-            dic[u'id'] = teams[i][0]
-            dic[u'name'] = teams[i][1].decode('utf-8')
-            dic[u'short'] = teams[i][2].decode('utf-8')
-            teams[i] = dic
-
-        # Query for players
-        db.query(player_query)
-        players_result = db.store_result()
-        players = list(players_result.fetch_row(maxrows=0))
-        players = map(list, players)
-
-        # Decode unicode strings
-        for i in range(len(players)):
-            dic = {}
-            dic[u'id'] = players[i][0]
-            dic[u'name'] = players[i][1].decode('utf-8')
-            dic[u'team'] = players[i][2].decode('utf-8')
-            players[i] = dic
-
-        db.close()
-
-        # Encode the result in unicode
-        result = json.dumps({u'teams': teams, u'players': players}, ensure_ascii=False)
-        response = flask.make_response(result)
-        return response
-    except:
-        logging.exception('Unable to fetch data from DB')
-        flask.abort(500)
-        return
-
-@app.route('/')
-def root():
-    return "In progress"
+modules = ['api.' + os.path.basename(f)[:-3] for f in glob.glob(os.path.join(os.path.dirname(__file__), 'api/*.py'))]
+for module in modules:
+    if module.endswith('__init__'):
+        continue
+    module_name = module.split('.')[-1]
+    for route in import_module(module).routes:
+        handler = route[1]()
+        app.add_url_rule(route[0], route[1].__name__ + '_post', view_func=handler.post, methods=['POST'])
+        app.add_url_rule(route[0], route[1].__name__ + '_get', view_func=handler.get, methods=['GET'])
 
 
 if __name__ == '__main__':
