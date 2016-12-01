@@ -15,3 +15,6 @@ class BaseHandler(object):
 
     def abort(self, code):
         flask.abort(code)
+
+    def make_response(self, response, status=200, headers={}):
+        return flask.make_response(response, status, headers)

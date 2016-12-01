@@ -12,3 +12,6 @@ class DBConfig:
     TEAMS_TABLE = 'teams'
     PLAYERS_TABLE = 'players'
     GOALIES_TABLE = 'goalies'
+
+class DraftConfig:
+    MAX_TEAM_NAME_LENGTH = 255
