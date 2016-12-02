@@ -50,20 +50,21 @@ class NameScreen extends Screen.Screen {
 
     validator(value) {
         return new Promise(function(resolve, reject) {
-            if (value === null || value.length === 0 || !/^[0-9a-zA-Z ]+$/.test(value)) {
+            if (value === null || value.length === 0 || !/^[0-9a-zA-Z \-_]+$/.test(value)) {
                 setTimeout(() => {
-                    p.reject();
+                    reject();
                 }, 0);
+                return;
             }
-            Request.request(DRAFT_NAME_AVAILABLE_URL, {name: value}).then(function() {
-                reject();  // Name exists so it is invalid.
-            }).catch(function(e) {
-                if (e.target.status === 404) {
+            Request.request(DRAFT_NAME_AVAILABLE_URL, {name: value}).then(function(response_text) {
+                if (response_text === 'available') {
                     resolve(value);
                 }
                 else {
                     reject();
                 }
+            }).catch(function(e) {
+                reject();
             });
         });
     }
