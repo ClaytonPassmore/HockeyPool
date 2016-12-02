@@ -22,9 +22,9 @@ class DraftNameHandler(BaseHandler):
 
         cursor.execute('SELECT name FROM drafts WHERE name=%s', (name, ))
         for result in cursor:
-            return self.make_response('Name exists')
+            return self.make_response(DraftConfig.NAME_TAKEN_RESPONSE)
 
-        return self.make_response('No draft exists with that name', status=404)
+        return self.make_response(DraftConfig.NAME_AVAILABLE_RESPONSE)
 
 
 class DraftTeamHandler(BaseHandler):

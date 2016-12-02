@@ -15,3 +15,5 @@ class DBConfig:
 
 class DraftConfig:
     MAX_TEAM_NAME_LENGTH = 255
+    NAME_AVAILABLE_RESPONSE = 'available'
+    NAME_TAKEN_RESPONSE = 'taken'
