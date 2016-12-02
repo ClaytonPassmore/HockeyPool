@@ -24,6 +24,7 @@ window.addEventListener('load', function() {
     var screen_mgr = new ViewUtils.ScreenManager(notification_manager);
     var screens = {};
     screens.title = screen_mgr.add_screen(new DraftScreens.TitleScreen(TITLE_TEXT));
+    screens.name = screen_mgr.add_screen(new DraftScreens.NameScreen(draft));
     screens.rounds = screen_mgr.add_screen(new DraftScreens.RoundsScreen(draft));
     screens.participants = screen_mgr.add_screen(new DraftScreens.ParticipantsScreen(draft));
     // TODO: Make actual screen classes for these guys

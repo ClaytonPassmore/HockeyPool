@@ -22,23 +22,22 @@ class Draft extends EventObject.EventObject {
         this.name = null;
 
         // Event Listeners
-        var self = this;
-        this.snake.addEventListener(Snake.COMPLETE_EVENT, function() {
-            self._emit(COMPLETE_EVENT);
+        this.snake.addEventListener(Snake.COMPLETE_EVENT, () => {
+            this._emit(COMPLETE_EVENT);
         });
-        this.snake.addEventListener(Snake.READY_EVENT, function() {
-            self.snake.next();
-            self._emit(READY_EVENT);
+        this.snake.addEventListener(Snake.READY_EVENT, () => {
+            this.snake.next();
+            this._emit(READY_EVENT);
         });
-        this.snake.addEventListener(Snake.NEXT_EVENT, function(selector) {
-            self.current_selector = selector;
+        this.snake.addEventListener(Snake.NEXT_EVENT, (selector) => {
+            this.current_selector = selector;
         });
-        this.snake.addEventListener(Snake.PREVIOUS_EVENT, function(selector) {
-            self.current_selector = selector;
+        this.snake.addEventListener(Snake.PREVIOUS_EVENT, (selector) => {
+            this.current_selector = selector;
         });
-        this.snake.addEventListener(Snake.RESET_EVENT, function() {
-            self.selection_record.reset();
-            self._emit(RESET_EVENT);
+        this.snake.addEventListener(Snake.RESET_EVENT, () => {
+            this.selection_record.reset();
+            this._emit(RESET_EVENT);
         });
 
         this.get_options_async();
@@ -102,20 +101,18 @@ class Draft extends EventObject.EventObject {
             'selections': selections
         });
 
-        var self = this;
-        request(SUBMIT_URL, selection_data).then(function() {
-            self._emit(SUBMIT_SUCCESS_EVENT);
-        }).catch(function(err) {
-            self._emit(SUBMIT_FAILURE_EVENT);
+        request(SUBMIT_URL, selection_data).then(() => {
+            this._emit(SUBMIT_SUCCESS_EVENT);
+        }).catch((err) => {
+            this._emit(SUBMIT_FAILURE_EVENT);
         });
     }
 
     get_options_async() {
-        var self = this;
-        request(PLAYERS_URL).then(function(values) {
-            self.bloodhound.set_data(JSON.parse(values));
-        }).catch(function(err) {
-            self._emit(LOAD_FAILURE_EVENT, [err])
+        request(PLAYERS_URL).then((values) => {
+            this.bloodhound.set_data(JSON.parse(values));
+        }).catch((err) => {
+            this._emit(LOAD_FAILURE_EVENT, [err])
         });
     }
 }
