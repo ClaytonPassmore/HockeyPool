@@ -18,7 +18,7 @@ function request(url, data, timeout) {
             xml.send();
         }
         else {
-            xml.send(data);
+            xml.send(JSON.stringify(data));
         }
     });
 }
