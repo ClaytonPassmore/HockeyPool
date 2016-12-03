@@ -19,6 +19,18 @@ window.addEventListener('load', function() {
 
     /* Create notification manager */
     var notification_manager = new Notify.NotificationManager();
+    draft.addEventListener(Draft.LOAD_FAILURE_EVENT, () => {
+        notification_manager.popup(
+            'Failed to load draft options',
+            'There was a problem downloading the available players and teams from our servers. ' +
+            'Please make sure you are connected to a reliable network! ' +
+            'If the problem persists, we may have screwed up.',
+            () => {
+                draft.get_options_async();
+            },
+            'retry'
+        );
+    })
 
     /* Create screens for each step of the draft */
     var screen_mgr = new ViewUtils.ScreenManager(notification_manager);

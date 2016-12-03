@@ -1,5 +1,5 @@
 const Screen = require('./screen');
-const Title = require('../widget/title');
+const Text = require('../widget/text');
 const Dialogue = require('../widget/dialogue');
 const Request = require('../utils/request');
 
@@ -9,7 +9,7 @@ const DRAFT_NAME_AVAILABLE_URL = 'http://localhost:5000/draft/name'
 class TitleScreen extends Screen.Screen {
     constructor(title) {
         super();
-        this.title = new Title.Title(title);
+        this.title = new Text.Title(title);
         var title_elem = this.title.get_element();
         title_elem.style.position = 'relative';
         title_elem.style.top = '50%';
@@ -29,7 +29,7 @@ class TitleScreen extends Screen.Screen {
 class NameScreen extends Screen.Screen {
     constructor(draft_model) {
         super();
-        this.dialogue = new Dialogue.TextDialogue('Select a name for the draft', 'Draft Name', this.validator);
+        this.dialogue = new Dialogue.TextDialogue('Select a name for the draft', 'Draft name', this.validator);
         var dialogue_elem = this.dialogue.get_element();
         dialogue_elem.style.position = 'relative';
         dialogue_elem.style.top = '50%';
