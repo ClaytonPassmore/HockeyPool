@@ -1,11 +1,11 @@
 import json
 import logging
+import re
 
-import MySQLdb
-
-from config import DBConfig
+from config import DBConfig, DraftConfig
 from utils.base_handler import BaseHandler
 from utils.db import latest_season_db, jsonify_query_results
+from utils.wrappers import require_params, db_conn, db_cursor
 
 
 class DraftHandler(BaseHandler):
@@ -14,42 +14,30 @@ class DraftHandler(BaseHandler):
 
 
 class DraftNameHandler(BaseHandler):
-    def get(self):
-        try:
-            db = MySQLdb.connect(
-                host=DBConfig.HOST,
-                user=DBConfig.USER,
-                passwd=DBConfig.PASSWORD,
-                db=latest_season_db()
-            )
-            names = map(lambda x: x['name'], jsonify_query_results(db, 'SELECT name FROM drafts'))
-            return json.dumps({'names': names})
-        except:
-            logging.exception('Unable to fetch draft names')
-            self.abort(500)
+    @require_params('name')
+    @db_cursor(latest_season_db())
+    def post(cursor, name, self):
+        if re.match('^[0-9a-zA-Z \-_]+$', name) is None or len(name) > DraftConfig.MAX_TEAM_NAME_LENGTH:
+            return self.make_response('Invalid name', status=415)
+
+        cursor.execute('SELECT name FROM drafts WHERE name=%s', (name, ))
+        for result in cursor:
+            return self.make_response(DraftConfig.NAME_TAKEN_RESPONSE)
+
+        return self.make_response(DraftConfig.NAME_AVAILABLE_RESPONSE)
 
 
 class DraftTeamHandler(BaseHandler):
-    def get(self):
-        try:
-            db = MySQLdb.connect(
-                host=DBConfig.HOST,
-                user=DBConfig.USER,
-                passwd=DBConfig.PASSWORD,
-                db=latest_season_db()
-            )
-
-            player_query = ('SELECT id, playerName, playerPositionCode, t.teamAbbrev, t.teamFullName '
-                            'FROM players JOIN (SELECT teamFullName, teamAbbrev FROM teams) as t '
-                            'ON playerTeamsPlayedFor = t.teamAbbrev')
-            goalie_query = ('SELECT id, (SELECT CONCAT(teamFullName, \' Goaltenders\')) AS playerName, '
-                            '(SELECT \'G\') as playerPositionCode, teamAbbrev, teamFullName FROM teams')
-            players = jsonify_query_results(db, player_query)
-            goalies = jsonify_query_results(db, goalie_query)
-            return json.dumps(players + goalies)
-        except:
-            logging.exception('Unable to fetch data from DB')
-            self.abort(500)
+    @db_conn(latest_season_db())
+    def get(db, self):
+        player_query = ('SELECT id, playerName, playerPositionCode, t.teamAbbrev, t.teamFullName '
+                        'FROM players JOIN (SELECT teamFullName, teamAbbrev FROM teams) as t '
+                        'ON playerTeamsPlayedFor = t.teamAbbrev')
+        goalie_query = ('SELECT id, (SELECT CONCAT(teamFullName, \' Goaltenders\')) AS playerName, '
+                        '(SELECT \'G\') as playerPositionCode, teamAbbrev, teamFullName FROM teams')
+        players = jsonify_query_results(db, player_query)
+        goalies = jsonify_query_results(db, goalie_query)
+        return json.dumps(players + goalies)
 
 
 class DraftSubmitHandler(BaseHandler):
@@ -60,12 +48,12 @@ class DraftSubmitHandler(BaseHandler):
         except:
             logging.warning('Submit data was malformed')
             self.abort(400)
-        return 'OK'
+        return self.make_response('OK')
 
 
 routes = [
     ('/draft', DraftHandler),
-    ('/draft/names', DraftNameHandler),
+    ('/draft/name', DraftNameHandler),
     ('/draft/players', DraftTeamHandler),
     ('/draft/submit', DraftSubmitHandler)
 ]
