@@ -24,6 +24,7 @@ class TextDialogue extends ViewUtils.ViewObject {
         this.picker.style.width = '100%';
         this.picker.style.margin = '20px auto';
         this.picker.style.display = 'block';
+        this.picker.style.boxSizing = 'border-box'
 
         var icon_container = document.createElement('div');
         icon_container.style.width = '100%';
