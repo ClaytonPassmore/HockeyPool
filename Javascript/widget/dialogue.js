@@ -86,14 +86,6 @@ class TextDialogue extends ViewUtils.ViewObject {
         this.element.appendChild(button_container);
     }
 
-    show_validation(value) {
-        this.validator(value).then(() => {
-            this.show_checkmark();
-        }).catch(() => {
-            this.show_x();
-        });
-    }
-
     show_checkmark() {
         this.status_icon.setAttribute('class', 'fa fa-check-circle fa-2x');
     }
