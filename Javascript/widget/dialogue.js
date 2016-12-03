@@ -1,5 +1,5 @@
 const ViewUtils = require('../utils/view_utils');
-const Title = require('./title');
+const Text = require('./text');
 const Button = require('./button');
 
 const SUBMIT_EVENT = 'submit';
@@ -12,7 +12,7 @@ class TextDialogue extends ViewUtils.ViewObject {
         this.validator = validator;
         this.element = document.createElement('div');
         this.element.setAttribute('class', 'dialogue-widget');
-        var title_widget = new Title.Title(title);
+        var title_widget = new Text.Title(title);
         var title_widget_elem = title_widget.get_element();
         title_widget.get_element().style.fontSize = '2em';
 
@@ -107,7 +107,7 @@ class NumberDialogue extends ViewUtils.ViewObject {
         super();
         this.element = document.createElement('div');
         this.element.setAttribute('class', 'dialogue-widget');
-        var title_widget = new Title.Title(title);
+        var title_widget = new Text.Title(title);
         title_widget.get_element().style.fontSize = '2em';
 
         this.picker = document.createElement('input');

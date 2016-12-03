@@ -1,5 +1,6 @@
 const ViewUtils = require('./view_utils');
 const Animate = require('./animate');
+const Popup = require('../widget/popup');
 
 const TIMEOUT = 5000;
 const ANIMATION_DURATION = 300;
@@ -11,6 +12,15 @@ class NotificationManager extends ViewUtils.ViewObject {
         this.element = document.createElement('div');
         this.element.setAttribute('class', 'notification-manager-widget');
         this.notifications = [];
+    }
+
+    popup(title, message, callback, type) {
+        var popup = new Popup.Popups[type](title, message);
+        popup.addEventListener(Popup.ACTION_EVENT, (action) => {
+            this.element.removeChild(popup.get_element());
+            callback(action);
+        });
+        this.element.appendChild(popup.get_element());
     }
 
     notify(message) {
