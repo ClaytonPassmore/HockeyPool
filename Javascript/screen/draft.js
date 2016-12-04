@@ -9,6 +9,7 @@ const DRAFT_NAME_AVAILABLE_URL = 'http://localhost:5000/draft/name'
 class TitleScreen extends Screen.Screen {
     constructor(title) {
         super();
+        this.element.tabIndex = 0;
         this.title = new Text.Title(title);
         var title_elem = this.title.get_element();
         title_elem.style.position = 'relative';
@@ -20,8 +21,17 @@ class TitleScreen extends Screen.Screen {
         this.element.addEventListener('click', () => {
             this.next();
         });
+        this.element.addEventListener('keyup', (e) => {
+            if (e.keyCode === 13) {
+                this.next();
+            }
+        });
 
         this.element.appendChild(title_elem);
+    }
+
+    focus() {
+        this.element.focus();
     }
 }
 

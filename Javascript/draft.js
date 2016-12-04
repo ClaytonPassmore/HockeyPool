@@ -49,4 +49,5 @@ window.addEventListener('load', function() {
     var entry = document.getElementById('entry');
     entry.appendChild(notification_manager.get_element());
     entry.appendChild(screen_mgr.get_element());
+    screen_mgr.focus_current();
 });
