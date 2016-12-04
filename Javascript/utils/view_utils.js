@@ -152,6 +152,10 @@ class ScreenManager extends ViewObject {
             this.notification_manager.notify(message);
         }
     }
+
+    focus_current() {
+        this.current_instance.focus();
+    }
 }
 
 
