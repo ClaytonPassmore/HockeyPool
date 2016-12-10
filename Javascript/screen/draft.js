@@ -212,6 +212,7 @@ class SelectionScreen extends Screen.Screen {
 
     focus() {
         this.dialogue.reset();
+        this.ac.update_list();
     }
 }
 
