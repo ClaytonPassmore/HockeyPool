@@ -155,8 +155,6 @@ class ParticipantsScreen extends Screen.Screen {
 class SelectionScreen extends Screen.Screen {
     constructor(draft_model) {
         super();
-        this.most_recent_selection_id = null;
-        this.most_recent_selection_text = null;
         this.draft_model = draft_model;
         this.dialogue = new Dialogue.TextDialogue('Test', 'Selection', this.validator.bind(this));
         this.element.appendChild(this.dialogue.get_element());
