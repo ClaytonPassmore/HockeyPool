@@ -1,6 +1,7 @@
 const Screen = require('./screen');
 const Text = require('../widget/text');
 const Dialogue = require('../widget/dialogue');
+const AutoComplete = require('../widget/autocomplete');
 const Request = require('../utils/request');
 
 const DRAFT_NAME_AVAILABLE_URL = 'http://localhost:5000/draft/name'
@@ -132,6 +133,8 @@ class ParticipantsScreen extends Screen.Screen {
                 this.number_of_participants = val;
             }
             this.notify('Selected ' + val + ' participants.');
+            this.draft_model.set_teams(['Clayton', 'Scott', 'Luc', 'Devin']);
+            this.next();
             // XXX
         });
         this.number_dialogue.addEventListener(Dialogue.BACK_EVENT, () => {
@@ -148,7 +151,73 @@ class ParticipantsScreen extends Screen.Screen {
 }
 
 
+
+class SelectionScreen extends Screen.Screen {
+    constructor(draft_model) {
+        super();
+        this.most_recent_selection_id = null;
+        this.most_recent_selection_text = null;
+        this.draft_model = draft_model;
+        this.dialogue = new Dialogue.TextDialogue('Test', 'Selection', this.validator.bind(this));
+        this.element.appendChild(this.dialogue.get_element());
+
+        // TODO:
+        // Drawer widget
+        // Selection list
+        // Snake preview widget
+
+        var template_func = function(item) {
+            return '<div>' + item.playerName + ' (' + item.playerPositionCode + ') - ' + item.teamAbbrev + '</div>';
+        };
+        var text_func = function(item) {
+            return item.playerName;
+        }
+        this.ac = new AutoComplete.AutoCompleteList(this.dialogue.picker,
+                                                    this.draft_model.bloodhound.get_bloodhound(),
+                                                    template_func,
+                                                    text_func);
+
+        this.dialogue.addEventListener(Dialogue.BACK_EVENT, () => {
+            this.previous();
+        });
+
+        this.dialogue.addEventListener(Dialogue.SUBMIT_EVENT, (val) => {
+            var item = this.ac.get_selection();
+            if (item === null) {
+                return;
+            }
+            this.draft_model.bloodhound.remove(item.id);
+            this.dialogue.reset();
+            this.ac.update_list();
+            console.log(item.text);  // XXX
+        });
+    }
+
+    validator(value) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                var item = this.ac.get_selection();
+                if (item === null) {
+                    reject(value);
+                }
+                else if (value === item.text) {
+                    resolve(value);
+                }
+                else {
+                    reject(value);
+                }
+            }, 0);
+        });
+    }
+
+    focus() {
+        this.dialogue.reset();
+    }
+}
+
+
 exports.TitleScreen = TitleScreen;
 exports.NameScreen = NameScreen;
 exports.RoundsScreen = RoundsScreen;
 exports.ParticipantsScreen = ParticipantsScreen;
+exports.SelectionScreen = SelectionScreen;
