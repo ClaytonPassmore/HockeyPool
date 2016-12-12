@@ -29,7 +29,7 @@ class bloodhound {
 
     remove(id) {
         var data = this.bloodhound.local;
-        for(idx in data) {
+        for(var idx in data) {
             if(id == data[idx].id) {
                 data.splice(idx, 1);
                 break;

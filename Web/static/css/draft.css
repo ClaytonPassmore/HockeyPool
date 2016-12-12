@@ -95,3 +95,23 @@ body {
     box-sizing: border-box;
     overflow: hidden;
 }
+
+.autocomplete-widget {
+    background-color: white;
+    position: absolute;
+    padding: 1px;
+}
+
+.autocomplete-element {
+    background-color: #E0E0E0;
+    color: #2A2A2A;
+    width: 100%;
+    font-size: 1em;
+    box-sizing: border-box;
+    padding: 5px;
+}
+
+.autocomplete-selected-element {
+    background-color: #2A2A2A !important;
+    color: #E0E0E0 !important;
+}

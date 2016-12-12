@@ -39,8 +39,8 @@ window.addEventListener('load', function() {
     screens.name = screen_mgr.add_screen(new DraftScreens.NameScreen(draft));
     screens.rounds = screen_mgr.add_screen(new DraftScreens.RoundsScreen(draft));
     screens.participants = screen_mgr.add_screen(new DraftScreens.ParticipantsScreen(draft));
+    screens.selection = screen_mgr.add_screen(new DraftScreens.SelectionScreen(draft));
     // TODO: Make actual screen classes for these guys
-    screens.selections = screen_mgr.add_screen(new DraftScreens.TitleScreen(TITLE_TEXT));
     screens.review = screen_mgr.add_screen(new DraftScreens.TitleScreen(TITLE_TEXT));
     screens.submit = screen_mgr.add_screen(new DraftScreens.TitleScreen(TITLE_TEXT));
     screen_mgr.set_screen(screens.title);
